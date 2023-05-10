@@ -391,6 +391,8 @@ PODS:
     - Firebase/Messaging (= 8.15.0)
     - React-Core
     - RNFBApp
+  - RNGestureHandler (1.10.3):
+    - React-Core
   - RNNotifee (5.7.0):
     - React-Core
     - RNNotifeeCore
@@ -402,6 +404,8 @@ PODS:
   - RNScreens (3.14.0):
     - React-Core
     - React-RCTImage
+  - RNSVG (12.5.1):
+    - React-Core
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
@@ -465,10 +469,12 @@ DEPENDENCIES:
   - RNFastImage (from `../../node_modules/react-native-fast-image`)
   - "RNFBApp (from `../../node_modules/@react-native-firebase/app`)"
   - "RNFBMessaging (from `../../node_modules/@react-native-firebase/messaging`)"
+  - RNGestureHandler (from `../../node_modules/react-native-gesture-handler`)
   - "RNNotifee (from `../../node_modules/@notifee/react-native`)"
   - "RNNotifeeCore (from `../../node_modules/@notifee/react-native/RNNotifeeCore.podspec`)"
   - RNPermissions (from `../../node_modules/react-native-permissions`)
   - RNScreens (from `../../node_modules/react-native-screens`)
+  - RNSVG (from `../../node_modules/react-native-svg`)
   - Yoga (from `../../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -591,6 +597,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@react-native-firebase/app"
   RNFBMessaging:
     :path: "../../node_modules/@react-native-firebase/messaging"
+  RNGestureHandler:
+    :path: "../../node_modules/react-native-gesture-handler"
   RNNotifee:
     :path: "../../node_modules/@notifee/react-native"
   RNNotifeeCore:
@@ -599,6 +607,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/react-native-permissions"
   RNScreens:
     :path: "../../node_modules/react-native-screens"
+  RNSVG:
+    :path: "../../node_modules/react-native-svg"
   Yoga:
     :path: "../../node_modules/react-native/ReactCommon/yoga"
 
@@ -665,10 +675,12 @@ SPEC CHECKSUMS:
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFBApp: e4439717c23252458da2b41b81b4b475c86f90c4
   RNFBMessaging: 40dac204b4197a2661dec5be964780c6ec39bf65
+  RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNNotifee: 40cc97ddc290e102894ea5381e90905f50598cfe
   RNNotifeeCore: 2d6233c6e9cf7755b8f460061c7811113043d2d3
   RNPermissions: 215c54462104b3925b412b0fb3c9c497b21c358b
   RNScreens: 4830eb40e0793b38849965cd27f4f3a7d7bc65c1
+  RNSVG: d7d7bc8229af3842c9cfc3a723c815a52cdd1105
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   Yoga: 099a946cbf84c9b32ffdc4278d72db26710ecf92
