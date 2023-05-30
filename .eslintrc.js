@@ -12,14 +12,14 @@ module.exports = {
   'plugins': ['@typescript-eslint'],
   'rules': {
     'linebreak-style': ['error', 'unix'],
-    'no-console': 'warn',
+    'no-console': 'off',
     'curly': ['warn', 'multi-line'],
     'semi': ['error', 'always'],
     'quotes': ['error', 'single', { avoidEscape: true }],
     'arrow-parens': ['error', 'always'],
     'eol-last': ['warn', 'always'],
     'multiline-ternary': ['off', 'always-multiline'], // turn off due to conflicts with prettier in jsx
-    'no-nested-ternary': 'error',
+    'no-nested-ternary': 'off',
     'no-empty': ['error', { 'allowEmptyCatch': true }],
     'comma-dangle': ['warn', 'always-multiline'],
     '@typescript-eslint/ban-types': 'off',
