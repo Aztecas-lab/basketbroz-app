@@ -9,7 +9,9 @@ import CalendarIcon from '../assets/svg/ic-calendar.svg';
 import CloseIcon from '../assets/svg/ic-close.svg';
 import FacebookIcon from '../assets/svg/ic-facebook.svg';
 import GoogleIcon from '../assets/svg/ic-google.svg';
+import NavBackIcon from '../assets/svg/ic-nav-back.svg';
 import ParticipantIcon from '../assets/svg/ic-pts.svg';
+import NavNextIcon from '../assets/svg/ic-nav-next.svg';
 import SeparatorIcon from '../assets/svg/ic-separator.svg';
 
 const SVGIcon = ({ name, svgProps, style = {} }) => {
@@ -38,6 +40,12 @@ const SVGIcon = ({ name, svgProps, style = {} }) => {
       break;
     case 'ic-arrow-right':
       IconComponent = ArrowRightIcon;
+      break;
+    case 'ic-nav-back':
+      IconComponent = NavBackIcon;
+      break;
+    case 'ic-nav-next':
+      IconComponent = NavNextIcon;
       break;
     case 'ic-arrow-down':
       IconComponent = ArrowDownIcon;
