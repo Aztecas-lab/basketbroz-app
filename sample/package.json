@@ -47,6 +47,7 @@
     "react-native-fast-image": "^8.5.11",
     "react-native-file-access": "^2.5.0",
     "react-native-gesture-handler": "^1.10.3",
+    "react-native-google-mobile-ads": "^11.0.0",
     "react-native-image-picker": "^4.7.3",
     "react-native-permissions": "^3.6.0",
     "react-native-safe-area-context": "^3.3.2",
