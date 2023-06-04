@@ -1,17 +1,33 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { Fragment } from 'react';
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 
 import { useSendbirdChat } from '@sendbird/uikit-react-native';
 
 import SVGIcon from '../components/SVGIcon';
+import { Routes } from '../libs/navigation';
 
 // import { SafeAreaView } from 'react-native-safe-area-context';
 
 const UserProfile = () => {
+  const { width, height } = useWindowDimensions();
   const navigation = useNavigation();
   const { currentUser } = useSendbirdChat();
   const avatar = currentUser?.metaData?.avatar;
+  const socialAppSize = (width - 100 - 24) / 2;
+
+  const onEditPress = () => {
+    navigation.navigate(Routes.UserProfileEdit);
+  };
 
   const renderNavHeader = () => {
     return (
@@ -22,15 +38,42 @@ const UserProfile = () => {
         <Text ellipsizeMode="tail" numberOfLines={1} style={styles.username}>
           {'@jh.lin'}
         </Text>
-        <Text style={styles.edit}>{'Edit'}</Text>
+        <TouchableOpacity
+          hitSlop={{ bottom: 20, top: 20, right: 20, left: 20 }}
+          activeOpacity={0.5}
+          onPress={onEditPress}
+        >
+          <Text style={styles.edit}>{'Edit'}</Text>
+        </TouchableOpacity>
       </View>
+    );
+  };
+
+  const renderSocialApps = (sns, icon, onPress) => {
+    const userId = '@jhlin';
+    return (
+      <Pressable
+        onPress={onPress}
+        style={{
+          width: socialAppSize,
+          height: socialAppSize,
+          borderRadius: 24,
+          backgroundColor: '#393939',
+          marginTop: 24,
+          padding: 18,
+          justifyContent: 'space-between',
+        }}
+      >
+        {icon}
+        <Text style={{ color: '#fff', fontSize: 11 }}>{userId}</Text>
+      </Pressable>
     );
   };
 
   return (
     <View style={styles.background}>
       {renderNavHeader()}
-      <View style={{ flex: 1, backgroundColor: '#222' }}>
+      <View style={{ flex: 1 }}>
         <ScrollView>
           {/* user info */}
           <View style={{ alignSelf: 'center', alignItems: 'center', marginTop: 14 }}>
@@ -56,16 +99,53 @@ const UserProfile = () => {
           </View>
 
           {/* follow */}
-          <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 12 }}>
-            <View style={{ alignItems: 'center' }}>
-              <Text style={styles.follow_num}>533</Text>
-              <Text style={styles.follow_label}>Followers</Text>
+          <View style={{ alignItems: 'center' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 12 }}>
+              <View style={{ alignItems: 'center' }}>
+                <Text style={styles.follow_num}>533</Text>
+                <Text style={styles.follow_label}>Followers</Text>
+              </View>
+              <SVGIcon style={{ marginHorizontal: 16 }} name="ic-separator" svgProps={{ width: 18, height: 18 }} />
+              <View style={{ alignItems: 'center' }}>
+                <Text style={styles.follow_num}>273</Text>
+                <Text style={styles.follow_label}>Following</Text>
+              </View>
             </View>
-            <SVGIcon style={{ marginHorizontal: 16 }} name="ic-separator" svgProps={{ width: 18, height: 18 }} />
-            <View style={{ alignItems: 'center' }}>
-              <Text style={styles.follow_num}>273</Text>
-              <Text style={styles.follow_label}>Following</Text>
-            </View>
+            <Pressable
+              style={{
+                marginTop: 24,
+                height: 32,
+                width: 200,
+                backgroundColor: '#fff',
+                borderRadius: 24,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Text style={{ fontSize: 14, color: '#222' }}>Follow</Text>
+            </Pressable>
+          </View>
+
+          {/* Social Apps */}
+          <View
+            style={{ paddingHorizontal: 50, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}
+          >
+            {renderSocialApps(
+              'sns_ig',
+              <Image style={{ width: 36, height: 36 }} source={require('../assets/sns_ig.png')}></Image>,
+            )}
+            {renderSocialApps(
+              'sns_yt',
+              <Image style={{ width: 36, height: 36 }} source={require('../assets/sns_yt.png')}></Image>,
+            )}
+            {renderSocialApps(
+              'sus_fb',
+              <Image style={{ width: 36, height: 36 }} source={require('../assets/sns_fb.png')}></Image>,
+            )}
+            {renderSocialApps(
+              'sns_twitter',
+              <Image style={{ width: 36, height: 36 }} source={require('../assets/sns_twitter.png')}></Image>,
+            )}
           </View>
         </ScrollView>
       </View>
@@ -76,7 +156,7 @@ const UserProfile = () => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: '#161616',
   },
   username: {
     flex: 1,

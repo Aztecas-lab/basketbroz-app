@@ -10,3 +10,4 @@ export { default as OpenChannelScreen } from './uikit/openChannel/OpenChannelScr
 export { default as OpenChannelSettingsScreen } from './uikit/openChannel/OpenChannelSettingsScreen';
 export { default as OpenChannelParticipantsScreen } from './uikit/openChannel/OpenChannelParticipantsScreen';
 export { default as UserProfileScreen } from './UserProfileScreen';
+export { default as UserProfileEditScreen } from './UserProfileEditScreen';

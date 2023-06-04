@@ -21,6 +21,7 @@ import {
   OpenChannelSettingsScreen,
   SignInScreen,
   UserProfileScreen,
+  UserProfileEditScreen,
 } from './screens';
 
 const Stack = createNativeStackNavigator();
@@ -62,6 +63,7 @@ const UserProfileStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={Routes.UserProfileScreen}>
       <Stack.Screen name={Routes.UserProfile} component={UserProfileScreen} />
+      <Stack.Screen name={Routes.UserProfileEdit} component={UserProfileEditScreen} />
     </Stack.Navigator>
   );
 };
@@ -80,7 +82,7 @@ const Navigation = () => {
 
 const App = () => {
   const { scheme } = useAppearance();
-  const isLightTheme = scheme === 'light';
+  const isLightTheme = scheme === 'dark';
   return (
     <SendbirdUIKitContainer
       appId={APP_ID}

@@ -14,6 +14,7 @@ export enum Routes {
   SignIn = 'SignIn',
   Home = 'Home',
   UserProfile = 'UserProfile',
+  UserProfileEdit = 'UserProfileEdit',
 
   Storybook = 'Storybook',
   Palette = 'Palette',

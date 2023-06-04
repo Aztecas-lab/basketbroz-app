@@ -22,8 +22,10 @@ import {
   View,
 } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { useOpenChannelList } from '@sendbird/uikit-chat-hooks';
 import { useConnection } from '@sendbird/uikit-react-native';
 import { useSendbirdChat } from '@sendbird/uikit-react-native';
 import { Button, useUIKitTheme } from '@sendbird/uikit-react-native-foundation';
@@ -221,7 +223,7 @@ const HomeScreen = () => {
 
   const safeAreaInset = useSafeAreaInsets();
   const { navigation } = useAppNavigation();
-  const { currentUser } = useSendbirdChat();
+  const { sdk, currentUser } = useSendbirdChat();
   const { signOut } = useAppAuth();
   const { disconnect } = useConnection();
   const { select, colors } = useUIKitTheme();
@@ -232,6 +234,7 @@ const HomeScreen = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
   const weekDayViewRef = useRef(null);
   const calendarViewRef = useRef(null);
+  const { openChannels, next, refresh, refreshing, loading, error } = useOpenChannelList(sdk, currentUser?.userId);
   // const headerTranslate = Animated.diffClamp(scrollY, 0, 60).interpolate({
   //   inputRange: [0, 1],
   //   outputRange: [1, 0],
@@ -243,6 +246,13 @@ const HomeScreen = () => {
   });
 
   const topSpace = safeAreaInset.top + 44;
+  console.log('topSpace:', topSpace);
+
+  useEffect(() => {
+    if (openChannels != null) {
+      console.log(openChannels);
+    }
+  }, [openChannels]);
 
   useEffect(() => {
     if (selectedDay != null && scheduleListRef.current != null) {
@@ -283,6 +293,12 @@ const HomeScreen = () => {
     }
   };
 
+  const onGamePress = () => {
+    if (openChannels != null && openChannels.length > 0) {
+      navigation.navigate(Routes.OpenChannel, { channelUrl: openChannels[0].url });
+    }
+  };
+
   const renderHeader = () => {
     const title = 'Basketbro';
     const avatar = currentUser?.metaData?.avatar;
@@ -302,9 +318,12 @@ const HomeScreen = () => {
           <Image style={styles.logo} source={require('../assets/basketBroz.png')} />
           <Text style={styles.title}>{title.toUpperCase()}</Text>
         </View>
-        <Pressable onPress={() => navigation.navigate(Routes.UserProfileStack)}>
+        <TouchableOpacity
+          hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+          onPress={() => navigation.navigate(Routes.UserProfileStack)}
+        >
           <Image style={styles.avatar} source={{ uri: avatar }} />
-        </Pressable>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -380,7 +399,7 @@ const HomeScreen = () => {
     const teamLogo1 = require('../assets/sample_team_1.png');
     const teamLogo2 = require('../assets/sample_team_2.png');
     return (
-      <View style={styles.event.background}>
+      <Pressable onPress={onGamePress} style={styles.event.background}>
         <Text style={styles.event.name}>{'GAME NAME'}</Text>
         <View style={{ marginTop: 8, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
           {renderTeamInfo({ teamName: 'Team 1', teamLogo: teamLogo1, awayHome: 'Home' })}
@@ -393,7 +412,7 @@ const HomeScreen = () => {
           </View>
           {renderTeamInfo({ teamName: 'Team 2', teamLogo: teamLogo2, awayHome: 'Away' })}
         </View>
-      </View>
+      </Pressable>
     );
   };
 
@@ -443,6 +462,15 @@ const HomeScreen = () => {
           // console.log(day);
         }}
       />
+      <View style={{ position: 'absolute', bottom: safeAreaInset.bottom }}>
+        <BannerAd
+          unitId={'ca-app-pub-2968296579280717/6715783010'}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: true,
+          }}
+        />
+      </View>
     </View>
   );
 };
