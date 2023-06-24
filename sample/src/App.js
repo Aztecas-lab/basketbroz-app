@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { CardStyleInterpolators, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 

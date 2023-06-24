@@ -126,9 +126,9 @@ const CustomCalendar = forwardRef((props, ref) => {
         hideExtraDays={true}
         renderArrow={(direction) => {
           if (direction === 'left') {
-            return <SVGIcon name={'ic-nav-back'} svgProps={{ height: 24, width: 24 }} />;
+            return <SVGIcon name={'ic_nav_back'} svgProps={{ height: 24, width: 24 }} />;
           } else {
-            return <SVGIcon name={'ic-nav-next'} svgProps={{ height: 24, width: 24 }} />;
+            return <SVGIcon name={'ic_nav_next'} svgProps={{ height: 24, width: 24 }} />;
           }
         }}
         dayComponent={({ date, state, onPress, marking }) => {
@@ -378,7 +378,7 @@ const HomeScreen = () => {
             );
           })}
           <TouchableOpacity onPress={handleCalendarIconPress} style={styles.capsule}>
-            <SVGIcon name={'ic-calendar'} svgProps={{ width: 24, height: 24 }} />
+            <SVGIcon name={'ic_calendar'} svgProps={{ width: 24, height: 24 }} />
           </TouchableOpacity>
         </View>
       </Animated.View>
@@ -406,7 +406,7 @@ const HomeScreen = () => {
           <View style={{ alignItems: 'center' }}>
             <Text style={styles.event.score}>{'112 - 99'}</Text>
             <View style={{ flexDirection: 'row', marginTop: 8 }}>
-              <SVGIcon name={'ic-pts'} svgProps={{ width: 12, height: 12 }} />
+              <SVGIcon name={'ic_pts'} svgProps={{ width: 12, height: 12 }} />
               <Text style={styles.event.num_pts}>100</Text>
             </View>
           </View>

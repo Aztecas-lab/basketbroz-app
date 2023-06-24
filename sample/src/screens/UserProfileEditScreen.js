@@ -30,7 +30,7 @@ const UserProfileEditScreen = () => {
     return (
       <View style={{ width: '100%', height: 56, backgroundColor: '#000', alignItems: 'center', flexDirection: 'row' }}>
         <TouchableOpacity style={{ padding: 16 }} onPress={() => navigation.goBack()}>
-          <SVGIcon svgProps={{ width: 24, height: 24 }} name={'ic-arrow-left'}></SVGIcon>
+          <SVGIcon svgProps={{ width: 24, height: 24 }} name={'ic_arrow_left'}></SVGIcon>
         </TouchableOpacity>
         <Text ellipsizeMode="tail" numberOfLines={1} style={styles.username}>
           {'Edit Profile'}
@@ -53,7 +53,7 @@ const UserProfileEditScreen = () => {
         <Text style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>{title}</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <Text style={{ flex: 1, fontSize: 14, color: '#fff', marginTop: 8, marginBottom: 12 }}>{content}</Text>
-          <SVGIcon name={'ic-arrow-right'} svgProps={{ width: 16, height: 16 }} />
+          <SVGIcon name={'ic_arrow_right'} svgProps={{ width: 16, height: 16 }} />
         </View>
       </View>
     );
@@ -81,7 +81,7 @@ const UserProfileEditScreen = () => {
                 <SVGIcon
                   style={{ position: 'absolute', bottom: 0, right: 0 }}
                   svgProps={{ width: 24, height: 24 }}
-                  name={'ic-camera'}
+                  name={'ic_camera'}
                 />
               </TouchableOpacity>
             </View>

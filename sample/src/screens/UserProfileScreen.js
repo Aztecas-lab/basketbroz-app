@@ -33,7 +33,7 @@ const UserProfile = () => {
     return (
       <View style={{ width: '100%', height: 56, backgroundColor: '#000', alignItems: 'center', flexDirection: 'row' }}>
         <TouchableOpacity style={{ padding: 16 }} onPress={() => navigation.goBack()}>
-          <SVGIcon svgProps={{ width: 24, height: 24 }} name={'ic-close'}></SVGIcon>
+          <SVGIcon svgProps={{ width: 24, height: 24 }} name={'ic_close'}></SVGIcon>
         </TouchableOpacity>
         <Text ellipsizeMode="tail" numberOfLines={1} style={styles.username}>
           {'@jh.lin'}
@@ -95,7 +95,7 @@ const UserProfile = () => {
                 'Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.'
               }
             </Text>
-            <SVGIcon style={{ marginTop: 16 }} name={'ic-arrow-down'} svgProps={{ width: 16, height: 16 }} />
+            <SVGIcon style={{ marginTop: 16 }} name={'ic_arrow_down'} svgProps={{ width: 16, height: 16 }} />
           </View>
 
           {/* follow */}
@@ -105,7 +105,7 @@ const UserProfile = () => {
                 <Text style={styles.follow_num}>533</Text>
                 <Text style={styles.follow_label}>Followers</Text>
               </View>
-              <SVGIcon style={{ marginHorizontal: 16 }} name="ic-separator" svgProps={{ width: 18, height: 18 }} />
+              <SVGIcon style={{ marginHorizontal: 16 }} name="ic_separator" svgProps={{ width: 18, height: 18 }} />
               <View style={{ alignItems: 'center' }}>
                 <Text style={styles.follow_num}>273</Text>
                 <Text style={styles.follow_label}>Following</Text>

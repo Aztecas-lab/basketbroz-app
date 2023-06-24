@@ -92,16 +92,16 @@ const SignInScreen = () => {
                     onPress={handleGoogleLogin}
                     style={{ ...styles.social_login_button, marginRight: 16 }}
                   >
-                    <SVGIcon name={'ic-google'} svgProps={{ width: 30, height: 30 }} />
+                    <SVGIcon name={'ic_google'} svgProps={{ width: 30, height: 30 }} />
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={handleFacebookLogin}
                     style={{ ...styles.social_login_button, marginRight: 16 }}
                   >
-                    <SVGIcon name={'ic-facebook'} svgProps={{ width: 30, height: 30 }} />
+                    <SVGIcon name={'ic_facebook'} svgProps={{ width: 30, height: 30 }} />
                   </TouchableOpacity>
                   <TouchableOpacity onPress={handleAppleLogin} style={styles.social_login_button}>
-                    <SVGIcon name={'ic-apple'} svgProps={{ width: 30, height: 30 }} />
+                    <SVGIcon name={'ic_apple'} svgProps={{ width: 30, height: 30 }} />
                   </TouchableOpacity>
                 </View>
                 <Text style={{ textAlign: 'center', marginTop: 12, color: '#fff' }}>
