@@ -5,6 +5,7 @@ import {
   Alert,
   Image,
   InteractionManager,
+  KeyboardAvoidingView,
   Pressable,
   StatusBar,
   StyleSheet,
@@ -102,52 +103,54 @@ const SignInScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle={'light-content'} />
+    <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle={'light-content'} />
 
-      <View style={{ flex: 3, flexDirection: 'column', justifyContent: 'center' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Image style={styles.logo} source={require('../assets/basketBroz.png')} />
-          <Text style={styles.title}>{title.toUpperCase()}</Text>
+        <View style={{ flex: 3, flexDirection: 'column', justifyContent: 'center' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image style={styles.logo} source={require('../assets/basketBroz.png')} />
+            <Text style={styles.title}>{title.toUpperCase()}</Text>
+          </View>
         </View>
-      </View>
 
-      <View style={{ flex: 2, justifyContent: 'flex-start', alignItems: 'center', paddingHorizontal: 40 }}>
-        {isLoading ? (
-          <ActivityIndicator color={'#fff'} animating />
-        ) : (
-          <>
-            {currentUser != null ? (
-              <Text style={{ color: '#fff' }}>{`Hi! ${currentUser.nickname}`}</Text>
-            ) : (
-              <>
-                {renderUserIdLogin()}
-                <View style={{ flexDirection: 'row' }}>
-                  <TouchableOpacity
-                    onPress={handleGoogleLogin}
-                    style={{ ...styles.social_login_button, marginRight: 16 }}
-                  >
-                    <SVGIcon name={'ic_google'} svgProps={{ width: 30, height: 30 }} />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={handleFacebookLogin}
-                    style={{ ...styles.social_login_button, marginRight: 16 }}
-                  >
-                    <SVGIcon name={'ic_facebook'} svgProps={{ width: 30, height: 30 }} />
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={handleAppleLogin} style={styles.social_login_button}>
-                    <SVGIcon name={'ic_apple'} svgProps={{ width: 30, height: 30 }} />
-                  </TouchableOpacity>
-                </View>
-                <Text style={{ textAlign: 'center', marginTop: 12, color: '#fff' }}>
-                  {`進入即表示已滿 18 歲且同意使用政策及隱私政策`}
-                </Text>
-              </>
-            )}
-          </>
-        )}
-      </View>
-    </SafeAreaView>
+        <View style={{ flex: 2, justifyContent: 'flex-start', alignItems: 'center', paddingHorizontal: 40 }}>
+          {isLoading ? (
+            <ActivityIndicator color={'#fff'} animating />
+          ) : (
+            <>
+              {currentUser != null ? (
+                <Text style={{ color: '#fff' }}>{`Hi! ${currentUser.nickname}`}</Text>
+              ) : (
+                <>
+                  {renderUserIdLogin()}
+                  <View style={{ flexDirection: 'row' }}>
+                    <TouchableOpacity
+                      onPress={handleGoogleLogin}
+                      style={{ ...styles.social_login_button, marginRight: 16 }}
+                    >
+                      <SVGIcon name={'ic_google'} svgProps={{ width: 30, height: 30 }} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={handleFacebookLogin}
+                      style={{ ...styles.social_login_button, marginRight: 16 }}
+                    >
+                      <SVGIcon name={'ic_facebook'} svgProps={{ width: 30, height: 30 }} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handleAppleLogin} style={styles.social_login_button}>
+                      <SVGIcon name={'ic_apple'} svgProps={{ width: 30, height: 30 }} />
+                    </TouchableOpacity>
+                  </View>
+                  <Text style={{ textAlign: 'center', marginTop: 12, color: '#fff' }}>
+                    {`進入即表示已滿 18 歲且同意使用政策及隱私政策`}
+                  </Text>
+                </>
+              )}
+            </>
+          )}
+        </View>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
