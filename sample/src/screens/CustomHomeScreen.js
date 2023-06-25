@@ -1,38 +1,15 @@
 import moment from 'moment';
-import React, {
-  Fragment,
-  forwardRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-import {
-  Animated,
-  FlatList,
-  Image,
-  Pressable,
-  SectionList,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { Calendar, LocaleConfig } from 'react-native-calendars';
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import { Animated, Image, Pressable, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Calendar } from 'react-native-calendars';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useOpenChannelList } from '@sendbird/uikit-chat-hooks';
 import { useConnection } from '@sendbird/uikit-react-native';
 import { useSendbirdChat } from '@sendbird/uikit-react-native';
-import { Button, useUIKitTheme } from '@sendbird/uikit-react-native-foundation';
+import { useUIKitTheme } from '@sendbird/uikit-react-native-foundation';
 
-import HomeListItem from '../components/HomeListItem';
 import SVGIcon from '../components/SVGIcon';
-import Versions from '../components/Versions';
 import { useAppNavigation } from '../hooks/useAppNavigation';
 import { useAppAuth } from '../libs/authentication';
 import { Routes } from '../libs/navigation';
@@ -462,15 +439,6 @@ const HomeScreen = () => {
           // console.log(day);
         }}
       />
-      <View style={{ position: 'absolute', bottom: safeAreaInset.bottom }}>
-        <BannerAd
-          unitId={'ca-app-pub-2968296579280717/6715783010'}
-          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-          requestOptions={{
-            requestNonPersonalizedAdsOnly: true,
-          }}
-        />
-      </View>
     </View>
   );
 };
@@ -493,6 +461,7 @@ const styles = StyleSheet.create({
     width: 26,
     height: 26,
     borderRadius: 13,
+    backgroundColor: '#888',
   },
   capsule: {
     flex: 1,

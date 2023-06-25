@@ -8,6 +8,7 @@ import { GetSendbirdSDK } from '../factory';
 import { authManager } from './authentication';
 
 export enum Routes {
+  AuthStack = 'AuthStack',
   HomeStack = 'HomeStack',
   UserProfileStack = 'UserProfileStack',
 

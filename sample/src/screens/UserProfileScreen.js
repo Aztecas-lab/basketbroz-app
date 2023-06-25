@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import React, { Fragment } from 'react';
 import {
@@ -12,8 +13,10 @@ import {
 } from 'react-native';
 
 import { useSendbirdChat } from '@sendbird/uikit-react-native';
+import { useConnection } from '@sendbird/uikit-react-native';
 
 import SVGIcon from '../components/SVGIcon';
+import { useAppAuth } from '../libs/authentication';
 import { Routes } from '../libs/navigation';
 
 // import { SafeAreaView } from 'react-native-safe-area-context';
@@ -22,7 +25,10 @@ const UserProfile = () => {
   const { width, height } = useWindowDimensions();
   const navigation = useNavigation();
   const { currentUser } = useSendbirdChat();
+  const { signOut } = useAppAuth();
+  const { disconnect } = useConnection();
   const avatar = currentUser?.metaData?.avatar;
+  const userId = `@${currentUser?.userId}`;
   const socialAppSize = (width - 100 - 24) / 2;
 
   const onEditPress = () => {
@@ -36,7 +42,7 @@ const UserProfile = () => {
           <SVGIcon svgProps={{ width: 24, height: 24 }} name={'ic_close'}></SVGIcon>
         </TouchableOpacity>
         <Text ellipsizeMode="tail" numberOfLines={1} style={styles.username}>
-          {'@jh.lin'}
+          {userId}
         </Text>
         <TouchableOpacity
           hitSlop={{ bottom: 20, top: 20, right: 20, left: 20 }}
@@ -50,7 +56,6 @@ const UserProfile = () => {
   };
 
   const renderSocialApps = (sns, icon, onPress) => {
-    const userId = '@jhlin';
     return (
       <Pressable
         onPress={onPress}
@@ -83,12 +88,15 @@ const UserProfile = () => {
                   width: 96,
                   height: 96,
                   borderRadius: 48,
+                  backgroundColor: '#888',
                 }}
                 source={{ uri: avatar }}
               />
             </Pressable>
-            <Text style={{ marginTop: 14, fontSize: 14, color: '#fff', fontWeight: '700' }}>jh lin</Text>
-            <Text style={{ fontSize: 11, color: 'rgba(255,255,255, 0.38)' }}>@jhlin</Text>
+            <Text style={{ marginTop: 14, fontSize: 14, color: '#fff', fontWeight: '700' }}>
+              {currentUser?.nickname}
+            </Text>
+            <Text style={{ fontSize: 11, color: 'rgba(255,255,255, 0.38)' }}>{userId}</Text>
 
             <Text style={{ fontSize: 11, color: '#fff', paddingHorizontal: 40, marginTop: 30, textAlign: 'center' }}>
               {
@@ -147,6 +155,20 @@ const UserProfile = () => {
               <Image style={{ width: 36, height: 36 }} source={require('../assets/sns_twitter.png')}></Image>,
             )}
           </View>
+
+          {currentUser ? (
+            <TouchableOpacity
+              style={{ alignSelf: 'center', marginBottom: 50, marginTop: 16 }}
+              onPress={async () => {
+                await signOut();
+                await disconnect();
+                await AsyncStorage.removeItem('userId');
+                navigation.replace('AuthStack');
+              }}
+            >
+              <Text style={{ color: '#f00', marginTop: 20 }}>{'Sign out'}</Text>
+            </TouchableOpacity>
+          ) : null}
         </ScrollView>
       </View>
     </View>

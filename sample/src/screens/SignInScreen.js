@@ -1,12 +1,15 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   Image,
   InteractionManager,
   Pressable,
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -14,11 +17,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useConnection } from '@sendbird/uikit-react-native';
 import { useSendbirdChat } from '@sendbird/uikit-react-native';
-import { Button, TextInput, useUIKitTheme } from '@sendbird/uikit-react-native-foundation';
+import { useUIKitTheme } from '@sendbird/uikit-react-native-foundation';
 
-// import SVGIcon from '../components/SVGIcon';
 import SVGIcon from '../components/SVGIcon';
-import Versions from '../components/Versions';
 import { useAppNavigation } from '../hooks/useAppNavigation';
 import { useAppAuth } from '../libs/authentication';
 import { Routes } from '../libs/navigation';
@@ -30,20 +31,15 @@ const SignInScreen = () => {
   const { connect } = useConnection();
   const { currentUser } = useSendbirdChat();
 
-  const [userId, setUserId] = useState('jhlin');
-  const [nickname, setNickname] = useState('jhlin');
+  const [inputUserId, setInputUserId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const { signOut } = useAppAuth();
   const { disconnect } = useConnection();
 
   useEffect(() => {
-    if (currentUser != null) {
-      InteractionManager.runAfterInteractions(() => {
-        navigation.navigate(Routes.HomeStack);
-      });
-    }
-  }, [currentUser]);
+    login();
+  }, []);
 
   const handleFacebookLogin = () => {
     login();
@@ -59,12 +55,50 @@ const SignInScreen = () => {
 
   const login = async () => {
     setIsLoading(true);
-    connect(userId, { nickname: nickname })
-      .then((resp) => console.log(resp))
-      .catch((error) => console.log(error))
-      .finally(() => {
-        setIsLoading(false);
-      });
+    let userId = null;
+    const storedUserId = await AsyncStorage.getItem('userId');
+    if (storedUserId) {
+      userId = storedUserId;
+    } else {
+      if (inputUserId) {
+        userId = inputUserId;
+      }
+    }
+
+    if (userId) {
+      console.log('login with userid =', userId);
+      await disconnect();
+      connect(userId, { nickname: userId })
+        .then((resp) => {
+          console.log('login success!', resp);
+          InteractionManager.runAfterInteractions(() => {
+            navigation.replace(Routes.HomeStack);
+          });
+        })
+        .catch((error) => console.log(error))
+        .finally(() => {
+          setIsLoading(false);
+          AsyncStorage.setItem('userId', userId);
+        });
+    } else {
+      setIsLoading(false);
+      Alert.alert('請先輸入UserID');
+    }
+  };
+
+  const renderUserIdLogin = () => {
+    return (
+      <TextInput
+        numberOfLines={1}
+        multiline={false}
+        autoCapitalize="none"
+        autoCorrect={false}
+        placeholder="UserID"
+        style={{ padding: 8, marginBottom: 16, height: 40, width: 200, backgroundColor: '#fff' }}
+        onChangeText={(value) => setInputUserId(value)}
+        value={inputUserId}
+      />
+    );
   };
 
   return (
@@ -78,7 +112,7 @@ const SignInScreen = () => {
         </View>
       </View>
 
-      <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center', paddingHorizontal: 40 }}>
+      <View style={{ flex: 2, justifyContent: 'flex-start', alignItems: 'center', paddingHorizontal: 40 }}>
         {isLoading ? (
           <ActivityIndicator color={'#fff'} animating />
         ) : (
@@ -87,6 +121,7 @@ const SignInScreen = () => {
               <Text style={{ color: '#fff' }}>{`Hi! ${currentUser.nickname}`}</Text>
             ) : (
               <>
+                {renderUserIdLogin()}
                 <View style={{ flexDirection: 'row' }}>
                   <TouchableOpacity
                     onPress={handleGoogleLogin}
@@ -111,17 +146,6 @@ const SignInScreen = () => {
             )}
           </>
         )}
-
-        {currentUser ? (
-          <Pressable
-            onPress={async () => {
-              await signOut();
-              await disconnect();
-            }}
-          >
-            <Text style={{ color: '#fff', marginTop: 20 }}>{'Sign out'}</Text>
-          </Pressable>
-        ) : null}
       </View>
     </SafeAreaView>
   );

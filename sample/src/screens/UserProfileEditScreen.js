@@ -21,6 +21,7 @@ const UserProfileEditScreen = () => {
   const navigation = useNavigation();
   const { currentUser } = useSendbirdChat();
   const avatar = currentUser?.metaData?.avatar;
+  const userId = currentUser?.userId;
 
   const onAvatarPress = () => {};
 
@@ -73,6 +74,7 @@ const UserProfileEditScreen = () => {
                     width: 80,
                     height: 80,
                     borderRadius: 40,
+                    backgroundColor: '#888',
                   }}
                   source={{ uri: avatar }}
                 />
@@ -85,8 +87,8 @@ const UserProfileEditScreen = () => {
                 />
               </TouchableOpacity>
             </View>
-            <Text style={{ marginTop: 14, fontSize: 14, color: '#fff', fontWeight: '700' }}>jh lin</Text>
-            <Text style={{ fontSize: 11, color: 'rgba(255,255,255, 0.38)' }}>@jhlin</Text>
+            <Text style={{ marginTop: 14, fontSize: 14, color: '#fff', fontWeight: '700' }}>{userId}</Text>
+            <Text style={{ fontSize: 11, color: 'rgba(255,255,255, 0.38)' }}>{`@${userId}`}</Text>
           </View>
 
           <View style={{ marginTop: 14, flex: 1, height: 1, backgroundColor: 'rgba(255, 255, 255, 0.12)' }} />

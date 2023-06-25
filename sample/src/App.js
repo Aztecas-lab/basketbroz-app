@@ -19,8 +19,8 @@ import {
   OpenChannelScreen,
   OpenChannelSettingsScreen,
   SignInScreen,
-  UserProfileScreen,
   UserProfileEditScreen,
+  UserProfileScreen,
 } from './screens';
 
 const Stack = createNativeStackNavigator();
@@ -28,6 +28,7 @@ const Stack = createNativeStackNavigator();
 const AuthStack = () => {
   return (
     <Stack.Navigator
+      initialRouteName={Routes.SignIn}
       screenOptions={{
         animationEnabled: false,
         headerShown: false,
@@ -73,7 +74,15 @@ const Navigation = () => {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <AuthStack />
+        {/* <AuthStack key={'AuthStack'} /> */}
+        <Stack.Navigator
+          screenOptions={{
+            animationEnabled: false,
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name={Routes.AuthStack} component={AuthStack} />
+        </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
   );
@@ -91,6 +100,11 @@ const App = () => {
         notification: NotificationService,
         clipboard: ClipboardService,
         media: MediaService,
+      }}
+      userProfile={{
+        onCreateChannel: (channel) => {
+          const params = { channelUrl: channel.url };
+        },
       }}
       styles={{
         defaultHeaderTitleAlign: 'left', //'center',
