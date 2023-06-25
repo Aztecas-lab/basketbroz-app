@@ -1,4 +1,7 @@
 import React, { useMemo } from 'react';
+import { View } from 'react-native';
+import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { SendbirdError } from '@sendbird/chat';
 import { useOpenChannelMessages } from '@sendbird/uikit-chat-hooks';
@@ -115,6 +118,7 @@ const createOpenChannelFragment = (initModule?: Partial<OpenChannelModule>): Ope
         await updateFileMessage(message.messageId, processedParams);
       },
     );
+    const safeAreaInset = useSafeAreaInsets();
 
     return (
       <OpenChannelModule.Provider channel={channel} keyboardAvoidOffset={keyboardAvoidOffset}>
@@ -124,6 +128,15 @@ const createOpenChannelFragment = (initModule?: Partial<OpenChannelModule>): Ope
           onPressHeaderRight={isOperator ? onPressHeaderRightWithSettings : onPressHeaderRightWithParticipants}
         />
         <StatusComposition loading={loading} LoadingComponent={<OpenChannelModule.StatusLoading />}>
+          <View style={{ width: '100%', position: 'absolute', top: 56 + 48, zIndex: 10 }}>
+            <BannerAd
+              unitId={'ca-app-pub-2968296579280717/6715783010'}
+              size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+              requestOptions={{
+                requestNonPersonalizedAdsOnly: true,
+              }}
+            />
+          </View>
           <OpenChannelModule.MessageList
             channel={channel}
             enableMessageGrouping={enableMessageGrouping}
