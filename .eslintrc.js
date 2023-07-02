@@ -1,36 +1,7 @@
 module.exports = {
-  'env': {
-    'es2021': true,
-    'jest': true,
-  },
-  'extends': ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
-  'parser': '@typescript-eslint/parser',
-  'parserOptions': {
-    'ecmaVersion': 12,
-    'sourceType': 'module',
-  },
-  'plugins': ['@typescript-eslint'],
-  'rules': {
-    'linebreak-style': ['error', 'unix'],
-    'no-console': 'off',
-    'curly': ['warn', 'multi-line'],
-    'semi': ['error', 'always'],
-    'quotes': ['error', 'single', { avoidEscape: true }],
-    'arrow-parens': ['error', 'always'],
-    'eol-last': ['warn', 'always'],
-    'multiline-ternary': ['off', 'always-multiline'], // turn off due to conflicts with prettier in jsx
-    'no-nested-ternary': 'off',
-    'no-empty': ['error', { 'allowEmptyCatch': true }],
-    'comma-dangle': ['warn', 'always-multiline'],
-    '@typescript-eslint/ban-types': 'off',
-    '@typescript-eslint/ban-ts-comment': 'off',
-    '@typescript-eslint/no-var-requires': 'off',
-    '@typescript-eslint/no-unused-vars': [
-      'error',
-      {
-        'argsIgnorePattern': '^_',
-        'varsIgnorePattern': '^_',
-      },
-    ],
+  root: true,
+  extends: '@react-native-community',
+  rules: {
+    'react-native/no-inline-styles': 0,
   },
 };

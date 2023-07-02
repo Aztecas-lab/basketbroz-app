@@ -1,8 +1,0 @@
-node_modules
-lib
-android
-ios
-.eslintrc.js
-**/*.config.js
-**/scripts/*.js
-docs-validation/*

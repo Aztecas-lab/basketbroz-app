@@ -1,66 +1,75 @@
 {
-  "repository": "git@github.com:sendbird/sendbird-uikit-react-native.git",
+  "name": "@sendbird/uikit-sample-cli",
+  "version": "2.4.2",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "packages/*",
-      "sample",
-      "docs-validation"
-    ]
-  },
-  "packageManager": "yarn@1.22.19",
   "scripts": {
-    "postinstall": "patch-package",
-    "prepare": "lerna run --stream --sort prepare",
-    "prepublishOnly": "yarn build",
-    "reset": "find . -type dir -name node_modules | xargs rm -rf",
-    "clean": "lerna run clean",
-    "build": "lerna run build",
-    "docs": "yarn build && typedoc --out docs --entryPointStrategy packages 'packages/*' && yarn clean",
-    "test": "jest --verbose",
-    "test:build": "yarn build --stream && yarn clean --stream",
-    "test:docs-validation": "yarn build && yarn workspace @sendbird/docs-validation run test && yarn clean",
-    "lint": "yarn lint:eslint && yarn lint:prettier",
-    "fix": "yarn fix:eslint && yarn fix:prettier",
-    "lint:eslint": "eslint packages/*/src --ext ts,tsx -c ./.eslintrc.js",
-    "lint:prettier": "prettier --check \"sample/src/**/*.{ts,tsx}\" \"packages/*/src/**/*.{ts,tsx}\"",
-    "fix:eslint": "eslint --fix packages/*/src --ext ts,tsx -c ./.eslintrc.js",
-    "fix:prettier": "prettier --write \"sample/src/**/*.{ts,tsx}\" \"packages/*/src/**/*.{ts,tsx}\"",
-    "sample:pod-install": "cd sample/ios && pod install",
-    "sample:ios": "cd sample && yarn ios",
-    "sample:android": "cd sample && yarn android",
-    "deploy:ios": "cd sample/ios && bundle exec fastlane deploy",
-    "deploy:android": "cd sample/android && bundle exec fastlane deploy",
-    "bump:major": "lerna version major --no-git-tag-version",
-    "bump:minor": "lerna version minor --no-git-tag-version",
-    "bump:patch": "lerna version patch --no-git-tag-version",
-    "deploy:npm": "lerna publish from-git",
-    "make:feat": "yarn workspace @sendbird/uikit-react-native create-domain"
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "adb:reverse": "adb start-server && adb reverse tcp:8081 tcp:8081",
+    "get-stories": "sb-rn-get-stories"
   },
-  "devDependencies": {
-    "@testing-library/react-native": "11",
-    "@trivago/prettier-plugin-sort-imports": "^3.4.0",
-    "@types/jest": "^29.4.0",
-    "@typescript-eslint/eslint-plugin": "^5.9.1",
-    "@typescript-eslint/parser": "^5.9.1",
-    "babel-jest": "^29.4.3",
-    "chalk": "^4",
-    "conventional-changelog-conventionalcommits": "^5.0.0",
-    "del-cli": "^4.0.1",
-    "eslint": "^8.6.0",
-    "eslint-config-prettier": "^8.5.0",
-    "jest": "^29.4.3",
-    "lerna": "^5.1.6",
-    "patch-package": "^6.4.7",
-    "postinstall-postinstall": "^2.1.0",
-    "prettier": "^2.7.1",
+  "dependencies": {
+    "@bam.tech/react-native-image-resizer": "^3.0.4",
+    "@faker-js/faker": "^7.6.0",
+    "@notifee/react-native": "^5.3.0",
+    "@react-native-async-storage/async-storage": "^1.18.2",
+    "@react-native-camera-roll/camera-roll": "^5.0.4",
+    "@react-native-clipboard/clipboard": "^1.8.5",
+    "@react-native-community/datetimepicker": "^5.1.0",
+    "@react-native-community/netinfo": "^9.4.1",
+    "@react-native-community/push-notification-ios": "^1.10.1",
+    "@react-native-community/slider": "^4.2.0",
+    "@react-native-firebase/app": "^14.7.0",
+    "@react-native-firebase/messaging": "^14.7.0",
+    "@react-navigation/bottom-tabs": "^6.2.0",
+    "@react-navigation/native": "^6.0.6",
+    "@react-navigation/native-stack": "^6.7.0",
+    "@react-navigation/stack": "^6.3.16",
+    "@sendbird/chat": "^4.9.3",
+    "@sendbird/react-native-scrollview-enhancer": "^0.2.1",
+    "@sendbird/uikit-react-native": "^3.0.0",
+    "date-fns": "^2.30.0",
+    "fbjs": "^3.0.4",
+    "moment": "^2.29.4",
     "react": "17.0.2",
     "react-native": "0.67.5",
-    "react-native-builder-bob": "^0.18.2",
+    "react-native-calendars": "^1.1295.0",
+    "react-native-create-thumbnail": "^1.5.1",
+    "react-native-document-picker": "^8.0.0",
     "react-native-fast-image": "^8.5.11",
-    "react-native-safe-area-context": "^3.3.2",
-    "react-test-renderer": "^17.0.2",
-    "typedoc": "^0.23.7",
+    "react-native-file-access": "^2.5.0",
+    "react-native-gesture-handler": "^1.10.3",
+    "react-native-google-mobile-ads": "^11.0.0",
+    "react-native-image-picker": "^4.7.3",
+    "react-native-permissions": "^3.6.0",
+    "react-native-safe-area-context": "^4.3.4",
+    "react-native-screens": "3.14.0",
+    "react-native-svg": "12",
+    "react-native-touch-reload": "sendbird/react-native-touch-reload",
+    "react-native-video": "^5.2.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/runtime": "^7.12.5",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "@types/jest": "^26.0.23",
+    "@types/react": "^18.0.15",
+    "@types/react-native": "*",
+    "@types/react-test-renderer": "^17.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.7.0",
+    "@typescript-eslint/parser": "^5.7.0",
+    "babel-jest": "^26.6.3",
+    "babel-loader": "^8.2.3",
+    "eslint": "^7.14.0",
+    "jest": "^26.6.3",
+    "metro-react-native-babel-preset": "^0.66.2",
+    "react-dom": "17.0.2",
+    "react-native-monorepo-tools": "^1.1.4",
+    "react-native-svg-transformer": "^1.0.0",
+    "react-test-renderer": "17.0.2",
     "typescript": "4.9.4"
   },
   "jest": {
@@ -70,30 +79,11 @@
       "tsx",
       "js",
       "jsx",
-      "json"
-    ],
-    "setupFiles": [
-      "<rootDir>/node_modules/react-native/jest/setup.js",
-      "<rootDir>/jest.setup.js"
-    ],
-    "testRegex": "/__tests__/.*\\.(test|spec)\\.(js|tsx?)$",
-    "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?@?react-native|@testing-library|@react-navigation|@sendbird/chat)"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/"
+      "json",
+      "node"
     ],
     "moduleNameMapper": {
-      "@sendbird/uikit-([^/]+)": "<rootDir>/packages/uikit-$1/src"
-    },
-    "collectCoverageFrom": [
-      "**/packages/*/src/**",
-      "!packages/uikit-testing-tools/**",
-      "!**/__mocks__/**",
-      "!**/__fixtures__/**"
-    ]
-  },
-  "resolutions": {
-    "@sendbird/chat": "4.7.1"
+      "@sendbird/([^/]+)": "<rootDir>/../packages/$1/src"
+    }
   }
 }
