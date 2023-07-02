@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
-import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { SendbirdError } from '@sendbird/chat';
@@ -128,9 +128,17 @@ const createOpenChannelFragment = (initModule?: Partial<OpenChannelModule>): Ope
           onPressHeaderRight={isOperator ? onPressHeaderRightWithSettings : onPressHeaderRightWithParticipants}
         />
         <StatusComposition loading={loading} LoadingComponent={<OpenChannelModule.StatusLoading />}>
-          <View style={{ width: '100%', position: 'absolute', top: 56 + 48, zIndex: 10 }}>
+          <View
+            style={{
+              width: 50,
+              position: 'absolute',
+              top: 56 + 48 + 4,
+              zIndex: 10,
+            }}
+          >
             <BannerAd
-              unitId={'ca-app-pub-2968296579280717/6715783010'}
+              // unitId={'ca-app-pub-2968296579280717/6715783010'}
+              unitId={TestIds.BANNER}
               size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
               requestOptions={{
                 requestNonPersonalizedAdsOnly: true,
