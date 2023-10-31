@@ -1,0 +1,70 @@
+{
+  "name": "BasketBroz",
+  "version": "2.4.2",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "npx react-native run-ios --simulator=\"iPhone 15\"",
+    "start": "npx react-native start --reset-cache",
+    "test": "jest",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+  },
+  "dependencies": {
+    "@invertase/react-native-apple-authentication": "^2.2.2",
+    "@react-native-async-storage/async-storage": "^1.15.17",
+    "@react-navigation/bottom-tabs": "^6.2.0",
+    "@react-navigation/native": "^6.0.6",
+    "@react-navigation/native-stack": "^6.7.0",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.43",
+    "react": "17.0.2",
+    "react-native": "0.67.5",
+    "react-native-calendars": "^1.1301.0",
+    "react-native-encrypted-storage": "^4.0.3",
+    "react-native-google-mobile-ads": "^12.2.0",
+    "react-native-localize": "2.x",
+    "react-native-safe-area-context": "^3.3.2",
+    "react-native-screens": "^3.17.0",
+    "react-native-splash-screen": "^3.3.0",
+    "react-native-svg": "12",
+    "react-native-webview": "^13.5.1",
+    "url-parse": "^1.5.10"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/runtime": "^7.12.5",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "@types/jest": "^26.0.23",
+    "@types/react": "^18.0.15",
+    "@types/react-native": "*",
+    "@types/react-test-renderer": "^17.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.7.0",
+    "@typescript-eslint/parser": "^5.7.0",
+    "babel-jest": "^26.6.3",
+    "babel-loader": "^8.2.3",
+    "eslint": "^7.32.0 || ^8.2.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "jest": "^26.6.3",
+    "metro-react-native-babel-preset": "^0.66.2",
+    "react-dom": "17.0.2",
+    "react-native-monorepo-tools": "^1.1.4",
+    "react-native-svg-transformer": "^1.0.0",
+    "react-test-renderer": "17.0.2",
+    "typescript": "4.9.4"
+  },
+  "jest": {
+    "preset": "react-native",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  }
+}
