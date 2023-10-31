@@ -4,12 +4,14 @@ import {
   ActivityIndicator,
   Image,
   InteractionManager,
+  Platform,
   StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
   useWindowDimensions,
+  Linking,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -117,16 +119,59 @@ const SignInScreen = () => {
                     style={{ width: "100%", height: "100%" }}
                   />
                 </TouchableOpacity>
-                <AppleLoginButton
-                  onStart={onAppleLoginStart}
-                  onResult={handleAppleLoginResult}
-                />
+                {Platform.OS === "ios" ? (
+                  <AppleLoginButton
+                    onStart={onAppleLoginStart}
+                    onResult={handleAppleLoginResult}
+                  />
+                ) : null}
               </>
             )}
           </View>
         </View>
-        <Text style={{ textAlign: "center", marginTop: 26, color: "#fff" }}>
-          {`By signing, you confirm that you are 18 years of age or older and agree to our Terms of Use and Privacy Policy.`}
+        <Text
+          style={{
+            fontSize: 16,
+            textAlign: "center",
+            marginTop: 26,
+            color: "#fff",
+          }}
+        >
+          {`By signing, you confirm that you are 18 years of age or older and agree to our `}
+          <Text
+            onPress={() => {
+              const tosUrl = `https://basketbroz.com/terms-of-service`;
+              Linking.canOpenURL(tosUrl).then((canOpen) => {
+                if (canOpen) {
+                  Linking.openURL(tosUrl);
+                }
+              });
+            }}
+            style={{
+              textDecorationLine: "underline",
+              textDecorationColor: "#fff",
+              textDecorationStyle: "solid",
+            }}
+          >
+            {`Terms of Use`}
+          </Text>
+          {` and `}
+          <Text
+            onPress={() => {
+              const privacyPolicyUrl = `https://basketbroz.com/privacy-policy`;
+              Linking.canOpenURL(privacyPolicyUrl).then((canOpen) => {
+                if (canOpen) {
+                  Linking.openURL(privacyPolicyUrl);
+                }
+              });
+            }}
+            style={{
+              textDecorationLine: "underline",
+              textDecorationColor: "#fff",
+              textDecorationStyle: "solid",
+            }}
+          >{`Privacy Policy`}</Text>
+          .
         </Text>
       </SafeAreaView>
       <TwitterLoginModal
