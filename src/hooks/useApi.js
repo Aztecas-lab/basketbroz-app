@@ -8,7 +8,7 @@ const readTimeout = 30 * 1000;
 const TAG = "[useApi]";
 
 const fetchWithTimeout = (method, url, formData, token) => {
-  console.log(`${TAG} ${method}:${url}`);
+  console.log(`${TAG} ${method}:${url}, formData=${JSON.stringify(formData)}`);
   return Promise.race([
     new Promise((resolve) => {
       setTimeout(() => {
@@ -20,11 +20,14 @@ const fetchWithTimeout = (method, url, formData, token) => {
         method: method,
         headers: {
           Accept: "application/json",
-          "Content-Type": "multipart/form-data",
           "X-BB-APP-TOKEN": env.BB_APP_TOKEN,
         },
       };
-      if (formData) {
+      if (formData && formData?._parts?.length > 0) {
+        request.headers = {
+          ...request.headers,
+          "Content-Type": "multipart/form-data",
+        };
         request.body = formData;
       }
       if (token) {
