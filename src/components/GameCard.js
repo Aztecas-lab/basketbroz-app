@@ -1,6 +1,13 @@
 import moment from "moment";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  useImperativeHandle,
+  forwardRef,
+} from "react";
 import {
+  ActivityIndicator,
   Image,
   Pressable,
   StyleSheet,
@@ -12,15 +19,20 @@ import {
 import TeamLogoSource from "../components/TeamLogoSource";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const GameCard = ({
-  payload,
-  onGamePress,
-  onRaffleTicketButtonPress,
-  index,
-}) => {
-  // console.log('\n\nGameCard:', payload);
+const wording = {
+  CLAIM_TICKET: "Claim a Ballionaire ticket",
+  TICKET_CLAIMED: "Ticket claimed",
+  DES_EXPIRED: "Expired",
+  DES_CLAIM_BEFORE: "Before ",
+  DES_CLAIMED: "Good luck to you!",
+  DES_CLAIM_NOT_AVAILABLE: "Not available yet",
+};
 
+const GameCard = forwardRef((props, ref) => {
+  // console.log('\n\nGameCard:', payload);
+  const { payload, onGamePress, onClaimButtonPress, index } = props;
   const [claimed, setClaimed] = useState(false);
+  const [isClaiming, setIsClaiming] = useState(false);
   const {
     channel = null,
     game_date_time = "",
@@ -33,7 +45,8 @@ const GameCard = ({
   const closeAtLocal = moment.utc(closeAtUtc).local().format("HH:mm");
   const openAtLocal = moment.utc(openAtUtc).local().format("HH:mm");
 
-  const gameStatus = channel.status;
+  // const gameStatus = channel.status;
+  const gameStatus = "created";
   const startTimeLocal = moment.utc(game_date_time).local().format("HH:mm");
   const homeTeam = home_team;
   const homeTeamName = homeTeam?.tricode;
@@ -43,11 +56,19 @@ const GameCard = ({
   const awayTeamLogo = TeamLogoSource[awayTeam?.tricode];
   const isLive = gameStatus === "created";
 
+  useImperativeHandle(ref, () => ({
+    onRewardedCallback: (payload) => {
+      console.log("onRewardedCallback:", payload);
+      setClaimed(true);
+      setIsClaiming(false);
+    },
+  }));
+
   useEffect(() => {}, []);
 
   const onClaimPress = () => {
-    onRaffleTicketButtonPress?.(id);
-    setClaimed(true);
+    onClaimButtonPress?.(id);
+    setIsClaiming(true);
   };
 
   const renderGameStatus = () => {
@@ -132,23 +153,25 @@ const GameCard = ({
   };
 
   const renderRaffleTicketButton = useCallback(() => {
-    let buttonText = "Claim a Ballionaire ticket";
-    let buttonDesp = `Before ${closeAtLocal}`;
+    let buttonText = "";
+    let buttonDesp = "";
     let disable = true;
     switch (gameStatus) {
       case "waiting":
-        buttonText = "Claim a Ballionaire ticket";
-        buttonDesp = "Not available yet";
+        buttonText = wording.CLAIM_TICKET;
+        buttonDesp = wording.DES_CLAIM_NOT_AVAILABLE;
         disable = true;
         break;
       case "created":
-        buttonText = claimed ? "Ticket claimed" : "Claim a Ballionaire ticket";
-        buttonDesp = claimed ? "Good luck to you!" : `Before ${closeAtLocal}`;
-        disable = claimed ? true : false;
+        buttonText = claimed ? wording.TICKET_CLAIMED : wording.CLAIM_TICKET;
+        buttonDesp = claimed
+          ? wording.DES_CLAIMED
+          : `${wording.DES_CLAIM_BEFORE} ${closeAtLocal}`;
+        disable = claimed || isClaiming ? true : false;
         break;
       case "deleted":
-        buttonText = claimed ? "Ticket claimed" : "Claim a Ballionaire ticket";
-        buttonDesp = claimed ? "Good luck to you!" : "Expired";
+        buttonText = claimed ? wording.TICKET_CLAIMED : wording.CLAIM_TICKET;
+        buttonDesp = claimed ? wording.DES_CLAIMED : wording.DES_EXPIRED;
         disable = true;
         break;
       default:
@@ -157,6 +180,7 @@ const GameCard = ({
     return (
       <>
         <TouchableOpacity
+          activeOpacity={0.7}
           disabled={disable}
           style={{
             marginTop: 24,
@@ -171,9 +195,13 @@ const GameCard = ({
           }}
           onPress={onClaimPress}
         >
-          <Text style={{ fontSize: 16, color: "#fff", fontWeight: "700" }}>
-            {buttonText}
-          </Text>
+          {isClaiming ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <Text style={{ fontSize: 16, color: "#fff", fontWeight: "700" }}>
+              {buttonText}
+            </Text>
+          )}
         </TouchableOpacity>
         <Text
           style={{
@@ -187,7 +215,7 @@ const GameCard = ({
         </Text>
       </>
     );
-  }, [claimed]);
+  }, [claimed, isClaiming]);
 
   return (
     <>
@@ -222,7 +250,7 @@ const GameCard = ({
       </Pressable>
     </>
   );
-};
+});
 
 const styles = StyleSheet.create({
   date: {

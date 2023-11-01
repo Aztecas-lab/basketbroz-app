@@ -56,6 +56,7 @@ const HomeScreen = () => {
   // const lastViewableSection = useRef(null);
   const autoScrollTimeout = useRef(null);
   const autoScrolling = useRef(false);
+  const gameCardRefs = useRef({});
 
   useEffect(() => {
     if (appBackToActive && interstitialAd) {
@@ -215,7 +216,7 @@ const HomeScreen = () => {
     }
   };
 
-  const onRaffleTicketButtonPress = (scheduleId) => {
+  const onClaimPress = (scheduleId) => {
     const adUnitId = __DEV__ ? TestIds.REWARDED : env.REWARDED_AD_ID;
     console.log("onRaffleTicketButtonPress:", scheduleId, authUser.uuid);
     const rewarded = RewardedAd.createForAdRequest(adUnitId, {
@@ -235,6 +236,7 @@ const HomeScreen = () => {
         RewardedAdEventType.EARNED_REWARD,
         (reward) => {
           console.log("User earned reward of ", reward);
+          gameCardRefs?.current?.[scheduleId]?.onRewardedCallback(reward);
           rewarded?.removeAllListeners();
         }
       );
@@ -378,10 +380,11 @@ const HomeScreen = () => {
   const renderGame = ({ item, index }) => {
     return (
       <GameCard
+        ref={(ref) => (gameCardRefs.current[item.id] = ref)}
         index={index}
         payload={item}
         onGamePress={onGamePress}
-        onRaffleTicketButtonPress={onRaffleTicketButtonPress}
+        onClaimButtonPress={onClaimPress}
       />
     );
   };
