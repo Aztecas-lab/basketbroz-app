@@ -9,20 +9,41 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  
+  NSURL *jsCodeLocation;
 
-  //Notification
-//  [UNUserNotificationCenter currentNotificationCenter].delegate = self;
   
-  RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+  // npx react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios
+  // Check if the release bundle (main.jsbundle) exists in the app bundle
+//  NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"main" ofType:@"jsbundle"];
+//  if (bundlePath) {
+//    jsCodeLocation = [NSURL fileURLWithPath:bundlePath];
+//    NSLog(@"Using main.jsbundle for JS bundle.");
+//  } else {
+//    // If the main.jsbundle doesn't exist, fall back to the development server
+//    jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+//    NSLog(@"main.jsbundle not found. Falling back to the development server.");
+//  }
+  
+  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+
+  RCTBridge *bridge = [[RCTBridge alloc] initWithBundleURL:jsCodeLocation
+                                          moduleProvider:nil
+                                          launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
-                                                   moduleName:@"SendbirdUIKitSample"
-                                            initialProperties:nil];
+                                               moduleName:@"SendbirdUIKitSample"
+                                        initialProperties:nil];
   
-//  NSURL *jsBundleURL = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-//  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsBundleURL
-//                                                      moduleName:@"SendbirdUIKitSample"
-//                                               initialProperties:nil
-//                                                   launchOptions:launchOptions];
+
+  // Notification
+//  [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+
+  // The original code
+//  RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+//  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
+//                                                   moduleName:@"SendbirdUIKitSample"
+//                                            initialProperties:nil];
+ 
   
   if (@available(iOS 13.0, *)) {
     rootView.backgroundColor = [UIColor systemBackgroundColor];
@@ -41,11 +62,11 @@
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
-#if DEBUG
-  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-#else
-  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-#endif
+  #if DEBUG
+    return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  #else
+    return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  #endif
 }
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center
