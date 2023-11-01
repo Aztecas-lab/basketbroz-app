@@ -29,8 +29,7 @@ import useAppState from "../hooks/useAppState";
 import useAuthUser from "../hooks/useAuthUser";
 import useInterstitalAd from "../hooks/useInterstitalAd";
 import { Routes } from "../route";
-
-const adUnitId = __DEV__ ? TestIds.REWARDED : env.REWARDED_AD_ID;
+// import * as Sentry from "@sentry/react-native";
 
 const mainColor = "#CC301A";
 
@@ -217,6 +216,7 @@ const HomeScreen = () => {
   };
 
   const onRaffleTicketButtonPress = (scheduleId) => {
+    const adUnitId = __DEV__ ? TestIds.REWARDED : env.REWARDED_AD_ID;
     console.log("onRaffleTicketButtonPress:", scheduleId, authUser.uuid);
     const rewarded = RewardedAd.createForAdRequest(adUnitId, {
       serverSideVerificationOptions: {
