@@ -45,12 +45,6 @@ const fetchWithTimeout = (method, url, formData, token) => {
         })
         .then((resp) => {
           console.log("Response in json:", resp);
-
-          // handle Unauthenticated
-          if (resp?.message?.startsWith("Unauthenticated")) {
-            setAuthToken(null);
-            setAuthUser(null);
-          }
           resolve(resp);
         })
         .catch((err) => {
@@ -94,6 +88,14 @@ const post = (path, params = {}, token = null) => {
 const useApi = () => {
   const { authToken, setAuthToken, setAuthUser } = useAuthUser();
 
+  // handle unauthenticated
+  const handleUnAuth = (resp) => {
+    if (resp?.message?.startsWith("Unauthenticated")) {
+      setAuthToken(null);
+      setAuthUser(null);
+    }
+  };
+
   /**
    * Log in SNS
    */
@@ -107,6 +109,8 @@ const useApi = () => {
     if (isValidResult) {
       setAuthToken(result.access_token);
       setAuthUser(result.data);
+    } else {
+      handleUnAuth(result);
     }
     return { success: isValidResult, ...result };
   };
@@ -130,6 +134,8 @@ const useApi = () => {
     if (isValidResult) {
       setAuthToken(null);
       setAuthUser(null);
+    } else {
+      handleUnAuth(result);
     }
     return { success: isValidResult };
   }, [authToken, setAuthToken, setAuthUser]);
@@ -143,6 +149,8 @@ const useApi = () => {
     const isValidResult = result?.data != null;
     if (isValidResult) {
       setAuthUser(result.data);
+    } else {
+      handleUnAuth(result);
     }
     return { success: isValidResult, message: result.message ?? "" };
   }, [authToken, setAuthUser, setAuthToken]);
@@ -157,6 +165,8 @@ const useApi = () => {
       const isValidResult = result?.data != null;
       if (isValidResult) {
         setAuthUser(result?.data);
+      } else {
+        handleUnAuth(result);
       }
       return { success: isValidResult };
     },
@@ -187,7 +197,9 @@ const useApi = () => {
         path.concat(`$away_team_id=${payload?.away_team_id}`);
       }
       const result = await get(path, authToken);
+      handleUnAuth(result);
       const isValidResult = result?.data != null;
+
       return { success: isValidResult, ...result };
     },
     [authToken]
@@ -206,6 +218,7 @@ const useApi = () => {
       }
       const path = `/api/nba/schedules/game-date?start_at=${startAt}&end_at=${endAt}&page_size=100`;
       const result = await get(path, authToken);
+      handleUnAuth(result);
       const isValidResult = result?.data != null;
       return { success: isValidResult, ...result };
     },
