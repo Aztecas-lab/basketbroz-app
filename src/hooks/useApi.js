@@ -45,6 +45,12 @@ const fetchWithTimeout = (method, url, formData, token) => {
         })
         .then((resp) => {
           console.log("Response in json:", resp);
+
+          // handle Unauthenticated
+          if (resp?.message?.startsWith("Unauthenticated")) {
+            setAuthToken(null);
+            setAuthUser(null);
+          }
           resolve(resp);
         })
         .catch((err) => {
@@ -137,11 +143,6 @@ const useApi = () => {
     const isValidResult = result?.data != null;
     if (isValidResult) {
       setAuthUser(result.data);
-    } else {
-      if (result.message === "Unauthenticated.") {
-        setAuthToken(null);
-        setAuthUser(null);
-      }
     }
     return { success: isValidResult, message: result.message ?? "" };
   }, [authToken, setAuthUser, setAuthToken]);
