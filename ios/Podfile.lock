@@ -342,8 +342,14 @@ PODS:
   - RNScreens (3.27.0):
     - React-Core
     - React-RCTImage
+  - RNSentry (5.12.0):
+    - React-Core
+    - Sentry/HybridSDK (= 8.14.2)
   - RNSVG (12.5.1):
     - React-Core
+  - Sentry/HybridSDK (8.14.2):
+    - SentryPrivate (= 8.14.2)
+  - SentryPrivate (8.14.2)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -387,6 +393,7 @@ DEPENDENCIES:
   - RNGoogleMobileAds (from `../node_modules/react-native-google-mobile-ads`)
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -399,6 +406,8 @@ SPEC REPOS:
     - GoogleUtilities
     - nanopb
     - PromisesObjC
+    - Sentry
+    - SentryPrivate
 
 EXTERNAL SOURCES:
   boost:
@@ -477,6 +486,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-localize"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSentry:
+    :path: "../node_modules/@sentry/react-native"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   Yoga:
@@ -528,7 +539,10 @@ SPEC CHECKSUMS:
   RNGoogleMobileAds: 85313da1827c3ee57c016ca10d02e2eb95d00bce
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
   RNScreens: 2b19e2471db8a581c83f381f4ea5d43071c9a3bf
+  RNSentry: 22ec5cbcdfffeea7fae88695467a3af5f8d94790
   RNSVG: d7d7bc8229af3842c9cfc3a723c815a52cdd1105
+  Sentry: e0ea366f95ebb68f26d6030d8c22d6b2e6d23dd0
+  SentryPrivate: 949a21fa59872427edc73b524c3ec8456761d97f
   Yoga: 099a946cbf84c9b32ffdc4278d72db26710ecf92
 
 PODFILE CHECKSUM: 7cfe1375c2abc51afd475c53df8f5bcb50ce1f65

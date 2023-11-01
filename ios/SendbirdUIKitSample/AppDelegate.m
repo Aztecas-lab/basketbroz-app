@@ -11,11 +11,18 @@
 {
 
   //Notification
-  [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+//  [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+  
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"SendbirdUIKitSample"
                                             initialProperties:nil];
+  
+//  NSURL *jsBundleURL = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+//  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsBundleURL
+//                                                      moduleName:@"SendbirdUIKitSample"
+//                                               initialProperties:nil
+//                                                   launchOptions:launchOptions];
   
   if (@available(iOS 13.0, *)) {
     rootView.backgroundColor = [UIColor systemBackgroundColor];

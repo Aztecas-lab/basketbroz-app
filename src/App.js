@@ -17,6 +17,11 @@ import {
 } from "./screens";
 import UserProfileEditNickname from "./screens/UserProfileEditNickname";
 import UserProfileEditUsername from "./screens/UserProfileEditUsername";
+import * as Sentry from '@sentry/react-native';
+
+Sentry.init({
+  dsn: 'https://a950f9d5531fbb7c5f63558841022189@o4506147998597120.ingest.sentry.io/4506147999973376',
+});
 
 moment.tz.setDefault(getTimeZone());
 const Stack = createNativeStackNavigator();
