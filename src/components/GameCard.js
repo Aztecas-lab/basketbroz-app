@@ -45,8 +45,7 @@ const GameCard = forwardRef((props, ref) => {
   const closeAtLocal = moment.utc(closeAtUtc).local().format("HH:mm");
   const openAtLocal = moment.utc(openAtUtc).local().format("HH:mm");
 
-  // const gameStatus = channel.status;
-  const gameStatus = "created";
+  const gameStatus = channel.status;
   const startTimeLocal = moment.utc(game_date_time).local().format("HH:mm");
   const homeTeam = home_team;
   const homeTeamName = homeTeam?.tricode;
