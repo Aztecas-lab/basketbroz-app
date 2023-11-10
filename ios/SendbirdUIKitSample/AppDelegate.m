@@ -11,19 +11,18 @@
 {
   
   NSURL *jsCodeLocation;
-
   
   // npx react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios
   // Check if the release bundle (main.jsbundle) exists in the app bundle
-//  NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"main" ofType:@"jsbundle"];
-//  if (bundlePath) {
-//    jsCodeLocation = [NSURL fileURLWithPath:bundlePath];
-//    NSLog(@"Using main.jsbundle for JS bundle.");
-//  } else {
-//    // If the main.jsbundle doesn't exist, fall back to the development server
-//    jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-//    NSLog(@"main.jsbundle not found. Falling back to the development server.");
-//  }
+  // NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"main" ofType:@"jsbundle"];
+  // if (bundlePath) {
+  //   jsCodeLocation = [NSURL fileURLWithPath:bundlePath];
+  //   NSLog(@"Using main.jsbundle for JS bundle.");
+  // } else {
+  //   // If the main.jsbundle doesn't exist, fall back to the development server
+  //   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  //   NSLog(@"main.jsbundle not found. Falling back to the development server.");
+  // }
   
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 

@@ -1,5 +1,5 @@
-import { useNavigation } from "@react-navigation/native";
-import React, { useRef, useState } from "react";
+import {useNavigation} from '@react-navigation/native';
+import React, {useRef, useState} from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -12,18 +12,18 @@ import {
   View,
   useWindowDimensions,
   Linking,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-import AppleLoginButton from "../components/AppleLoginButton";
-import TwitterLoginModal from "../components/TwitterLoginModal";
-import useApi from "../hooks/useApi";
-import { Routes } from "../route";
+import AppleLoginButton from '../components/AppleLoginButton';
+import TwitterLoginModal from '../components/TwitterLoginModal';
+import useApi from '../hooks/useApi';
+import {Routes} from '../route';
 
 const SignInScreen = () => {
-  const { registerApple, login } = useApi();
+  const {registerApple, login} = useApi();
   const twitterModalRef = useRef(null);
-  const { width } = useWindowDimensions();
+  const {width} = useWindowDimensions();
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -37,9 +37,9 @@ const SignInScreen = () => {
     }
   };
 
-  const onTwitterLoginResult = (result) => {
+  const onTwitterLoginResult = result => {
     setIsLoading(false);
-    console.log("Twitter log in result:", result);
+    console.log('Twitter log in result:', result);
     if (result?.success) {
       InteractionManager.runAfterInteractions(() => {
         navigation.replace(Routes.HomeStack);
@@ -51,12 +51,12 @@ const SignInScreen = () => {
     setIsLoading(true);
   };
 
-  const handleAppleLoginResult = async (result) => {
+  const handleAppleLoginResult = async result => {
     const idToken = result?.identityToken;
     if (result.identityToken != null) {
-      const r = await registerApple({ token: idToken });
+      const r = await registerApple({token: idToken});
       if (r.success && r.sns_token) {
-        login({ snsType: "apple", snsToken: r.sns_token }).then((resp) => {
+        login({snsType: 'apple', snsToken: r.sns_token}).then(resp => {
           setIsLoading(false);
           if (resp.success) {
             InteractionManager.runAfterInteractions(() => {
@@ -67,6 +67,8 @@ const SignInScreen = () => {
       } else {
         setIsLoading(false);
       }
+    } else {
+      setIsLoading(false);
     }
   };
 
@@ -76,12 +78,12 @@ const SignInScreen = () => {
   return (
     <>
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle={"light-content"} />
+        <StatusBar barStyle={'light-content'} />
 
         <Image
           resizeMode="contain"
-          style={{ width: width * 0.69, height: width * 0.69 * 0.14 }}
-          source={require("../assets/app_logo.png")}
+          style={{width: width * 0.69, height: width * 0.69 * 0.14}}
+          source={require('../assets/app_logo.png')}
         />
         <Image
           style={{
@@ -89,37 +91,34 @@ const SignInScreen = () => {
             height: (width * 0.6) / 0.68,
             marginTop: 20,
           }}
-          source={require("../assets/boy_login.png")}
+          source={require('../assets/boy_login.png')}
         />
 
         <View
           style={{
-            justifyContent: "flex-start",
-            alignItems: "center",
+            justifyContent: 'flex-start',
+            alignItems: 'center',
             paddingHorizontal: 40,
-          }}
-        >
+          }}>
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             {isLoading ? (
-              <ActivityIndicator animating size={"small"} color={"white"} />
+              <ActivityIndicator animating size={'small'} color={'white'} />
             ) : (
               <>
                 <TouchableOpacity
                   onPress={handleTwitterLogin}
-                  style={{ ...styles.social_login_button, marginRight: 16 }}
-                >
+                  style={{...styles.social_login_button, marginRight: 16}}>
                   <Image
-                    source={require("../assets/twitter_login.png")}
-                    style={{ width: "100%", height: "100%" }}
+                    source={require('../assets/twitter_login.png')}
+                    style={{width: '100%', height: '100%'}}
                   />
                 </TouchableOpacity>
-                {Platform.OS === "ios" ? (
+                {Platform.OS === 'ios' ? (
                   <AppleLoginButton
                     onStart={onAppleLoginStart}
                     onResult={handleAppleLoginResult}
@@ -132,50 +131,47 @@ const SignInScreen = () => {
         <Text
           style={{
             fontSize: 16,
-            textAlign: "center",
+            textAlign: 'center',
             marginTop: 26,
-            color: "#fff",
-          }}
-        >
-          {`By signing, you confirm that you are 18 years of age or older and agree to our `}
+            color: '#fff',
+          }}>
+          {`By clicking the buttons to sign up/log in, you acknowledge that you have read and agree to our `}
           <Text
             onPress={() => {
               const tosUrl = `https://basketbroz.com/terms-of-service`;
-              Linking.canOpenURL(tosUrl).then((canOpen) => {
+              Linking.canOpenURL(tosUrl).then(canOpen => {
                 if (canOpen) {
                   Linking.openURL(tosUrl);
                 }
               });
             }}
             style={{
-              textDecorationLine: "underline",
-              textDecorationColor: "#fff",
-              textDecorationStyle: "solid",
-            }}
-          >
-            {`Terms of Use`}
+              textDecorationLine: 'underline',
+              textDecorationColor: '#fff',
+              textDecorationStyle: 'solid',
+            }}>
+            {`Terms of Service`}
           </Text>
           {` and `}
           <Text
             onPress={() => {
               const privacyPolicyUrl = `https://basketbroz.com/privacy-policy`;
-              Linking.canOpenURL(privacyPolicyUrl).then((canOpen) => {
+              Linking.canOpenURL(privacyPolicyUrl).then(canOpen => {
                 if (canOpen) {
                   Linking.openURL(privacyPolicyUrl);
                 }
               });
             }}
             style={{
-              textDecorationLine: "underline",
-              textDecorationColor: "#fff",
-              textDecorationStyle: "solid",
-            }}
-          >{`Privacy Policy`}</Text>
+              textDecorationLine: 'underline',
+              textDecorationColor: '#fff',
+              textDecorationStyle: 'solid',
+            }}>{`Privacy Policy`}</Text>
           .
         </Text>
       </SafeAreaView>
       <TwitterLoginModal
-        ref={(ref) => (twitterModalRef.current = ref)}
+        ref={ref => (twitterModalRef.current = ref)}
         onResult={onTwitterLoginResult}
       />
     </>
@@ -185,18 +181,18 @@ const SignInScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    alignItems: 'center',
     paddingHorizontal: 24,
-    justifyContent: "center",
-    backgroundColor: "#000",
+    justifyContent: 'center',
+    backgroundColor: '#000',
   },
   social_login_button: {
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
