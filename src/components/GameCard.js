@@ -30,7 +30,7 @@ const GAME_STATUS = {
 // ad_reward": {"can_click_ad": false, "click_count": 0, "click_latest_date_time": null}
 const GameCard = forwardRef((props, ref) => {
   const {payload, onGamePress, onClaimButtonPress, index} = props;
-  console.log('\n\nGameCard:', payload);
+  // console.log('\n\nGameCard:', payload);
   const [claimed, setClaimed] = useState(false);
   const [isClaiming, setIsClaiming] = useState(false);
   const {
@@ -187,11 +187,11 @@ const GameCard = forwardRef((props, ref) => {
       <>
         <TouchableOpacity
           activeOpacity={0.7}
-          disabled={disable}
+          disabled={disable || isClaiming}
           style={{
             marginTop: 24,
             height: 48,
-            backgroundColor: disable ? '#555' : '#CC301A',
+            backgroundColor: disable || isClaiming ? '#555' : '#CC301A',
             borderRadius: 24,
             marginHorizontal: 20,
             flexDirection: 'row',

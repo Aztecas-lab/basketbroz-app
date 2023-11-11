@@ -15,6 +15,7 @@ import {
   View,
 } from 'react-native';
 import {
+  AdEventType,
   RewardedAd,
   RewardedAdEventType,
   TestIds,
@@ -249,7 +250,7 @@ const HomeScreen = () => {
   };
 
   const onClaimPress = scheduleId => {
-    const adUnitId = __DEV__ ? TestIds.REWARDED : env.REWARDED_AD_ID;
+    const adUnitId = env.REWARDED_AD_ID;
     console.log('onRaffleTicketButtonPress:', scheduleId, authUser.uuid);
     const rewarded = RewardedAd.createForAdRequest(adUnitId, {
       serverSideVerificationOptions: {
@@ -257,7 +258,11 @@ const HomeScreen = () => {
         userId: authUser.uuid,
       },
     });
+    console.log('rewarded:', rewarded);
     if (rewarded != null) {
+      const onError = rewarded.addAdEventListener(AdEventType.ERROR, error => {
+        console.warn('Error happens:', error);
+      });
       const unsubscribeLoaded = rewarded.addAdEventListener(
         RewardedAdEventType.LOADED,
         () => {
