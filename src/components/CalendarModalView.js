@@ -1,4 +1,4 @@
-import moment, { months } from "moment-timezone";
+import moment, {months} from 'moment-timezone';
 import React, {
   forwardRef,
   useCallback,
@@ -7,25 +7,19 @@ import React, {
   useMemo,
   useRef,
   useState,
-} from "react";
-import {
-  Animated,
-  Pressable,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { Calendar } from "react-native-calendars";
+} from 'react';
+import {Animated, Pressable, Text, TouchableOpacity, View} from 'react-native';
+import {Calendar} from 'react-native-calendars';
 
-import SVGIcon from "../components/SVGIcon";
-import useApi from "../hooks/useApi";
+import SVGIcon from '../components/SVGIcon';
+import useApi from '../hooks/useApi';
 
-const mainColor = "#CC301A";
+const mainColor = '#CC301A';
 
 const CalendarModalView = forwardRef((props, ref) => {
-  const { getGameSchedules } = useApi();
+  const {getGameSchedules} = useApi();
   const [selected, setSelected] = useState(
-    props?.selectedDay ?? moment().format("YYYY-MM-DD")
+    props?.selectedDay ?? moment().format('YYYY-MM-DD'),
   );
   const [visible, setVisible] = useState(false);
   const [top, setTop] = useState(0);
@@ -36,7 +30,7 @@ const CalendarModalView = forwardRef((props, ref) => {
   const lastMonthChange = useRef(null); // {"month": 1, "year: 2024 "}
 
   const schedulesMap = useMemo(() => {
-    schedules.forEach((item) => {
+    schedules.forEach(item => {
       scheduleMapRef.current[item.game_date] = item;
     });
     return scheduleMapRef.current;
@@ -46,7 +40,7 @@ const CalendarModalView = forwardRef((props, ref) => {
     return {
       [selected]: {
         selected: true,
-        selectedTextColor: "#fff",
+        selectedTextColor: '#fff',
         customStyles: {
           container: {
             // ...your awesome styles
@@ -56,7 +50,7 @@ const CalendarModalView = forwardRef((props, ref) => {
         payload: {
           selected: true,
           game: {
-            name: "123",
+            name: '123',
           },
         },
       },
@@ -65,20 +59,20 @@ const CalendarModalView = forwardRef((props, ref) => {
 
   useEffect(() => {
     if (props.selectedDay != null) {
-      setSelected(props.selectedDay.format("YYYY-MM-DD"));
+      setSelected(props.selectedDay.format('YYYY-MM-DD'));
     }
   }, [props.selectedDay]);
 
-  const onDayPress = (day) => {
+  const onDayPress = day => {
     setSelected(day.dateString);
     handleCalendarConfirm(day.dateString);
   };
 
-  const show = (param) => {
-    const { top = 0, selectedDay } = param;
-    setSelected(moment(selectedDay).format("YYYY-MM-DD"));
+  const show = param => {
+    const {top = 0, selectedDay} = param;
+    setSelected(moment(selectedDay).format('YYYY-MM-DD'));
     setTop(top);
-    setVisible((prev) => !prev);
+    setVisible(prev => !prev);
     Animated.timing(transY, {
       toValue: 1,
       useNativeDriver: true,
@@ -87,23 +81,23 @@ const CalendarModalView = forwardRef((props, ref) => {
   };
 
   useImperativeHandle(ref, () => ({
-    show: (param) => show(param),
+    show: param => show(param),
   }));
 
   const handleHideCalendar = () => {
-    Animated.timing(transY, { toValue: 0, useNativeDriver: true }).start(() => {
+    Animated.timing(transY, {toValue: 0, useNativeDriver: true}).start(() => {
       setVisible(false);
       transY.setValue(0);
     });
     // setVisible(false);
   };
 
-  const handleCalendarConfirm = (selectedDay) => {
-    Animated.timing(transY, { toValue: 0, useNativeDriver: true }).start(() => {
+  const handleCalendarConfirm = selectedDay => {
+    Animated.timing(transY, {toValue: 0, useNativeDriver: true}).start(() => {
       setVisible(false);
       transY.setValue(0);
     });
-    console.log("press OK selected:", selectedDay);
+    console.log('press OK selected:', selectedDay);
     props?.onDaySelected?.(selectedDay);
     // setVisible(false);
   };
@@ -116,18 +110,17 @@ const CalendarModalView = forwardRef((props, ref) => {
     <Animated.View
       style={{
         top: 0,
-        position: "absolute",
-        width: "100%",
-        height: "100%",
-        backgroundColor: "#0009",
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#0009',
         opacity: transY,
-        transform: [{ translateY: transY }],
-      }}
-    >
-      <Pressable onPress={handleHideCalendar} style={{ height: top }} />
+        transform: [{translateY: transY}],
+      }}>
+      <Pressable onPress={handleHideCalendar} style={{height: top}} />
       <Calendar
         disableArrowLeft={disableLeftArrow}
-        onVisibleMonthsChange={(months) => {
+        onVisibleMonthsChange={months => {
           // const selectedMonth = months[0].month;
           const selectedMonth = months[0].year * 100 + months[0].month;
           // const currentMonth = moment().month() + 1;
@@ -136,12 +129,12 @@ const CalendarModalView = forwardRef((props, ref) => {
         }}
         allowSelectionOutOfRange={false}
         disableAllTouchEventsForDisabledDays={true}
-        onMonthChange={async (payload) => {
+        onMonthChange={async payload => {
           const dateString = payload.dateString;
           const startAt = moment(dateString)
-            .startOf("month")
-            .format("YYYY-MM-DD");
-          const endAt = moment(dateString).endOf("month").format("YYYY-MM-DD");
+            .startOf('month')
+            .format('YYYY-MM-DD');
+          const endAt = moment(dateString).endOf('month').format('YYYY-MM-DD');
           // console.log('onMonthChange', payload);
           // console.log('onMonthChange', startAt, endAt);
           const shouldFetchData =
@@ -149,13 +142,11 @@ const CalendarModalView = forwardRef((props, ref) => {
             lastMonthChange.current.month !== payload.month ||
             lastMonthChange.current.year !== payload.year;
           if (shouldFetchData) {
-            getGameSchedules({ start_at: startAt, end_at: endAt }).then(
-              (resp) => {
-                if (resp.success && resp.data) {
-                  setSchedules(resp.data);
-                }
+            getGameSchedules({start_at: startAt, end_at: endAt}).then(resp => {
+              if (resp.success && resp.data) {
+                setSchedules(resp.data);
               }
-            );
+            });
           }
           lastMonthChange.current = {
             month: payload.month,
@@ -168,31 +159,31 @@ const CalendarModalView = forwardRef((props, ref) => {
         // onPressArrowLeft={() => {
         //   console.log('arrow left press');
         // }}
-        renderArrow={(direction) => {
-          if (direction === "left") {
+        renderArrow={direction => {
+          if (direction === 'left') {
             return (
-              <View style={{ opacity: disableLeftArrow ? 0 : 1 }}>
+              <View style={{opacity: disableLeftArrow ? 0 : 1}}>
                 <SVGIcon
-                  name={"ic_nav_back"}
-                  svgProps={{ height: 24, width: 24 }}
+                  name={'ic_nav_back'}
+                  svgProps={{height: 24, width: 24}}
                 />
               </View>
             );
           } else {
             return (
               <SVGIcon
-                name={"ic_nav_next"}
-                svgProps={{ height: 24, width: 24 }}
+                name={'ic_nav_next'}
+                svgProps={{height: 24, width: 24}}
               />
             );
           }
         }}
         enableSwipeMonths={true}
-        minDate={moment().format("YYYY-MM-DD")}
-        dayComponent={({ date, state, onPress, marking }) => {
-          const payload = marking?.["payload"];
-          const isToday = state === "today";
-          const isDisable = state === "disabled";
+        minDate={moment().format('YYYY-MM-DD')}
+        dayComponent={({date, state, onPress, marking}) => {
+          const payload = marking?.['payload'];
+          const isToday = state === 'today';
+          const isDisable = state === 'disabled';
           const selected = payload?.selected;
           const hasGames = schedulesMap[date.dateString] != null;
           return (
@@ -209,29 +200,27 @@ const CalendarModalView = forwardRef((props, ref) => {
                 width: 40,
                 height: 40,
                 borderRadius: 20,
-                borderColor: isToday ? mainColor : "transparent",
-                justifyContent: "center",
-                alignItems: "center",
+                borderColor: isToday ? mainColor : 'transparent',
+                justifyContent: 'center',
+                alignItems: 'center',
                 borderWidth: 1,
-                backgroundColor: selected ? mainColor : "transparent",
+                backgroundColor: selected ? mainColor : 'transparent',
                 // ...marking?.['customStyles']?.container,
-              }}
-            >
+              }}>
               <Text
                 style={{
                   fontSize: 16,
-                  textAlign: "center",
-                  color: isDisable ? "#888" : "#fff",
-                }}
-              >
+                  textAlign: 'center',
+                  color: isDisable ? '#888' : '#fff',
+                }}>
                 {date.day}
               </Text>
               {hasGames && !isDisable ? (
                 <View
                   style={{
-                    position: "absolute",
+                    position: 'absolute',
                     bottom: 6,
-                    backgroundColor: selected ? "#fff" : mainColor,
+                    backgroundColor: selected ? '#fff' : mainColor,
                     height: 4,
                     width: 4,
                     borderRadius: 2,
@@ -242,21 +231,21 @@ const CalendarModalView = forwardRef((props, ref) => {
           );
         }}
         theme={{
-          "stylesheet.calendar.header": {
+          'stylesheet.calendar.header': {
             header: {
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
               paddingHorizontal: 40,
             },
           },
-          selectedDayBackgroundColor: "#00adf5",
+          selectedDayBackgroundColor: '#00adf5',
           todayTextColor: mainColor,
-          calendarBackground: "#000",
-          textSectionTitleColor: "white",
-          monthTextColor: "white",
-          arrowColor: "white",
-          textMonthFontWeight: "bold",
+          calendarBackground: '#0009',
+          textSectionTitleColor: 'white',
+          monthTextColor: 'white',
+          arrowColor: 'white',
+          textMonthFontWeight: 'bold',
         }}
         onDayPress={onDayPress}
         markedDates={marked}
@@ -298,8 +287,7 @@ const CalendarModalView = forwardRef((props, ref) => {
       </View> */}
       <Pressable
         onPress={handleHideCalendar}
-        style={{ height: "100%", backgroundColor: "#0005" }}
-      ></Pressable>
+        style={{height: '100%', backgroundColor: '#0009'}}></Pressable>
     </Animated.View>
   );
 });

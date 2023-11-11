@@ -13,6 +13,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  InteractionManager,
 } from 'react-native';
 import {
   AdEventType,
@@ -91,6 +92,17 @@ const HomeScreen = () => {
   const calendarViewRef = useRef(null);
   // const lastViewableSection = useRef(null);
   const gameCardRefs = useRef({});
+
+  useEffect(() => {
+    if (authUser == null) {
+      InteractionManager.runAfterInteractions(() => {
+        navigation.reset({
+          index: 0,
+          routes: [{name: Routes.AuthStack}],
+        });
+      });
+    }
+  }, [authUser]);
 
   useEffect(() => {
     if (appBackToActive && interstitialAd) {
@@ -405,6 +417,7 @@ const HomeScreen = () => {
             );
           })}
           <TouchableOpacity
+            activeOpacity={0.9}
             onPress={handleCalendarIconPress}
             style={styles.capsule}>
             <SVGIcon name={'ic_calendar'} svgProps={{width: 24, height: 24}} />
@@ -528,7 +541,7 @@ const HomeScreen = () => {
         <View style={{flex: 1, backgroundColor: '#161616'}}>
           {/* {renderSchedule()} */}
           {isFetching && !refreshing ? (
-            <ActivityIndicator style={{marginTop: 16}} animating />
+            <ActivityIndicator color="#888" style={{marginTop: 16}} animating />
           ) : (
             renderSchedule()
           )}

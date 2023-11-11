@@ -25,6 +25,7 @@ const TwitterLoginModal = forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false);
   const [title, setTitle] = useState('loading...');
   const webViewRef = useRef(null);
+  const isLoggingIn = useRef(false);
 
   useImperativeHandle(ref, () => ({
     open: openModal,
@@ -44,31 +45,27 @@ const TwitterLoginModal = forwardRef((props, ref) => {
     setTitle(message.nativeEvent.data);
   }
 
-  const handleNavigationStageChange = useCallback(
-    async webNavState => {
-      const {url} = webNavState;
-      const redirectUrl = new Url(url, true);
-      console.log('===== path:', redirectUrl.pathname);
-      if (url && redirectUrl.pathname.startsWith('/auth/result/twitter')) {
-        const path = redirectUrl.pathname;
-        const pathArr = path.split(`/`).filter(v => v != '');
-        const snsType = pathArr[2];
-        const status = pathArr[3];
-        const snsToken = pathArr[4];
-        console.log('status =', status);
-        console.log('snsToken =', snsToken);
-        if (status === 'success' && snsToken != null) {
-          webViewRef.current?.stopLoading();
-          // call login api
-          const result = await login({snsType, snsToken});
-          closeModal(result);
-        }
+  const handleNavigationStageChange = async webNavState => {
+    const {url} = webNavState;
+    const redirectUrl = new Url(url, true);
+    console.log('===== path:', redirectUrl.pathname);
+    if (url && redirectUrl.pathname.startsWith('/auth/result/twitter')) {
+      const path = redirectUrl.pathname;
+      const pathArr = path.split(`/`).filter(v => v != '');
+      const snsType = pathArr[2];
+      const status = pathArr[3];
+      const snsToken = pathArr[4];
+      console.log('status =', status);
+      console.log('snsToken =', snsToken);
+      if (status === 'success' && snsToken != null && !isLoggingIn.current) {
+        isLoggingIn.current = true;
+        webViewRef.current?.stopLoading();
+        // call login api
+        const result = await login({snsType, snsToken});
+        closeModal(result);
       }
-
-      // is loading: /auth/callback/twitter
-    },
-    [props],
-  );
+    }
+  };
 
   /**
    *  renders

@@ -109,8 +109,6 @@ const useApi = () => {
     if (isValidResult) {
       setAuthToken(result.access_token);
       setAuthUser(result.data);
-    } else {
-      handleUnAuth(result);
     }
     return {success: isValidResult, ...result};
   };

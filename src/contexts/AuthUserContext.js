@@ -25,6 +25,7 @@ export const AuthUserProvider = ({ children }) => {
   };
 
   const setAuthToken = (data) => {
+    console.log('setAuthToken:', data);
     setToken(data);
     try {
       if (data == null) {
