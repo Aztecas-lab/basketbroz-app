@@ -30,7 +30,7 @@
                                           moduleProvider:nil
                                           launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
-                                               moduleName:@"SendbirdUIKitSample"
+                                               moduleName:@"BasketBroz"
                                         initialProperties:nil];
   
 

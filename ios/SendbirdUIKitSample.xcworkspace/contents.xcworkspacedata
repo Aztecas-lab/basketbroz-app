@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:SendbirdUIKitSample.xcodeproj">
+      location = "group:/Users/jh.lin/Documents/BasketBroz/ios/BasketBroz.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

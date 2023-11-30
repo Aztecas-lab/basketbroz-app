@@ -4,7 +4,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '11.0'
 
-target 'SendbirdUIKitSample' do
+target 'BasketBroz' do
   config = use_native_modules!
 
   use_react_native!(
@@ -35,24 +35,27 @@ target 'SendbirdUIKitSample' do
 
   post_install do |installer|
     
-    find_and_replace("../node_modules/react-native/React/Base/RCTKeyCommands.m",
-                            "_modifierFlags",
-                            "_modifierEventFlags")
-    find_and_replace("../node_modules/react-native/React/Base/RCTKeyCommands.m",
-                            "_modifiedInput",
-                            "_modifiedEventInput")
-    find_and_replace("../node_modules/react-native/React/Base/RCTKeyCommands.m",
-                            "_isKeyDown",
-                            "_isKeyEventDown")
-    find_and_replace("../node_modules/react-native/React/DevSupport/RCTPackagerClient.h",
-                            "handleNotification",
-                            "handlePackageNotification")
+    # find_and_replace("../node_modules/react-native/React/Base/RCTKeyCommands.m",
+    #                         "_modifierFlags",
+    #                         "_modifierEventFlags")
+    # find_and_replace("../node_modules/react-native/React/Base/RCTKeyCommands.m",
+    #                         "_modifiedInput",
+    #                         "_modifiedEventInput")
+    # find_and_replace("../node_modules/react-native/React/Base/RCTKeyCommands.m",
+    #                         "_isKeyDown",
+    #                         "_isKeyEventDown")
+    # find_and_replace("../node_modules/react-native/React/DevSupport/RCTPackagerClient.h",
+    #                         "handleNotification",
+    #                         "handlePackageNotification")
 
-    find_and_replace("../node_modules/react-native/React/DevSupport/RCTPackagerConnection.mm",
-                            "handleNotification",
-                            "handlePackageNotification")
+    # find_and_replace("../node_modules/react-native/React/DevSupport/RCTPackagerConnection.mm",
+    #                         "handleNotification",
+    #                         "handlePackageNotification")
     
-    react_native_post_install(installer)
+    react_native_post_install(
+      installer,
+      :mac_catalyst_enabled => false
+    )
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
     
     installer.pods_project.targets.each do |target|

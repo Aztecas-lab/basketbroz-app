@@ -331,9 +331,9 @@ PODS:
     - React-perflogger (= 0.67.5)
   - RNAppleAuthentication (2.3.0):
     - React-Core
-  - RNCAsyncStorage (1.19.4):
+  - RNCAsyncStorage (1.19.5):
     - React-Core
-  - RNGoogleMobileAds (12.3.0):
+  - RNGoogleMobileAds (12.4.0):
     - Google-Mobile-Ads-SDK (= 10.12.0)
     - GoogleUserMessagingPlatform (= 2.1.0)
     - React-Core
@@ -535,8 +535,8 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 434efc9e5b6d0f14f49867f130b39376c971c1aa
   ReactCommon: a30c2448e5a88bae6fcb0e3da124c14ae493dac1
   RNAppleAuthentication: e99eaf3c4c01ad8ecb6125dd6f0cfd98871685b5
-  RNCAsyncStorage: 3a8f7145d17cdd9f88e7b77666c94a09e4f759c8
-  RNGoogleMobileAds: 85313da1827c3ee57c016ca10d02e2eb95d00bce
+  RNCAsyncStorage: f2974eca860c16a3e56eea5771fda8d12e2d2057
+  RNGoogleMobileAds: 54bbbe13e9ef53e6d5e98baa9a88a6446582c31d
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
   RNScreens: 2b19e2471db8a581c83f381f4ea5d43071c9a3bf
   RNSentry: 22ec5cbcdfffeea7fae88695467a3af5f8d94790
