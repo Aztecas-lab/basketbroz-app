@@ -19,6 +19,7 @@ import AppleLoginButton from '../components/AppleLoginButton';
 import TwitterLoginModal from '../components/TwitterLoginModal';
 import useApi from '../hooks/useApi';
 import {Routes} from '../route';
+import env from '../env';
 
 const SignInScreen = () => {
   const {registerApple, login} = useApi();
@@ -30,9 +31,18 @@ const SignInScreen = () => {
   /**
    * handler
    */
+
+  const handleGoogleLogin = () => {
+    if (twitterModalRef.current != null) {
+      twitterModalRef.current.open('google');
+      setIsLoading(true);
+      // Linking.openURL(`${env.HOST}${env.AUTH_PATH.google}`);
+    }
+  };
+
   const handleTwitterLogin = () => {
     if (twitterModalRef.current != null) {
-      twitterModalRef.current.open();
+      twitterModalRef.current.open('twitter');
       setIsLoading(true);
     }
   };
@@ -110,6 +120,14 @@ const SignInScreen = () => {
               <ActivityIndicator animating size={'small'} color={'white'} />
             ) : (
               <>
+                <TouchableOpacity
+                  onPress={handleGoogleLogin}
+                  style={{...styles.social_login_button, marginRight: 16}}>
+                  <Image
+                    source={require('../assets/sns_google.png')}
+                    style={{width: '50%', height: '50%'}}
+                  />
+                </TouchableOpacity>
                 <TouchableOpacity
                   onPress={handleTwitterLogin}
                   style={{...styles.social_login_button, marginRight: 16}}>

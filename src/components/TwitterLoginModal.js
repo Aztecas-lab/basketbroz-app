@@ -24,6 +24,7 @@ const TwitterLoginModal = forwardRef((props, ref) => {
   const {login} = useApi();
   const [visible, setVisible] = useState(false);
   const [title, setTitle] = useState('loading...');
+  const [sns, setSns] = useState(null);
   const webViewRef = useRef(null);
   const isLoggingIn = useRef(false);
 
@@ -32,7 +33,8 @@ const TwitterLoginModal = forwardRef((props, ref) => {
     close: () => closeModal(),
   }));
 
-  function openModal() {
+  function openModal(name) {
+    setSns(name);
     setVisible(true);
   }
 
@@ -55,6 +57,24 @@ const TwitterLoginModal = forwardRef((props, ref) => {
       const snsType = pathArr[2];
       const status = pathArr[3];
       const snsToken = pathArr[4];
+      console.log('status =', status);
+      console.log('snsToken =', snsToken);
+      if (status === 'success' && snsToken != null && !isLoggingIn.current) {
+        isLoggingIn.current = true;
+        webViewRef.current?.stopLoading();
+        // call login api
+        const result = await login({snsType, snsToken});
+        closeModal(result);
+      }
+    }
+
+    if (url && redirectUrl.pathname.startsWith('/auth/result/google')) {
+      const path = redirectUrl.pathname;
+      const pathArr = path.split(`/`).filter(v => v != '');
+      const snsType = pathArr[2];
+      const status = pathArr[3];
+      const snsToken = pathArr[4];
+      console.log('snsType =', snsType);
       console.log('status =', status);
       console.log('snsToken =', snsToken);
       if (status === 'success' && snsToken != null && !isLoggingIn.current) {
@@ -119,16 +139,22 @@ const TwitterLoginModal = forwardRef((props, ref) => {
       <SafeAreaView style={{flex: 1}}>
         {renderWebViewHeader()}
         <WebView
+          useWebView2={true}
+          allowsInlineMediaPlayback={true}
+          // userAgent="Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.70 Mobile Safari/537.36"
           style={{flex: 1, minHeight: 200, opacity: 0.99}}
           cacheEnabled={false}
-          incognito={true}
+          // incognito={true}
           ref={ref => (webViewRef.current = ref)}
           onNavigationStateChange={handleNavigationStageChange}
           injectedJavaScript={`setTimeout(function(){window.ReactNativeWebView.postMessage(document.title);}, 0); true;`}
           onMessage={onMessage}
           javaScriptEnabled
           startInLoadingState
-          source={{uri: `${env.HOST}${env.TWITTER_AUTH_PATH}`}}
+          source={{
+            uri:
+              sns != null ? `${env.HOST}${env.AUTH_PATH[sns]}` : `about:blank`,
+          }}
         />
       </SafeAreaView>
     </Modal>
