@@ -23,7 +23,6 @@ import {
 } from 'react-native-google-mobile-ads';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-// import getItemLayout from 'react-native-section-list-get-item-layout';
 import CalendarModalView from '../components/CalendarModalView';
 import GameCard from '../components/GameCard';
 import SVGIcon from '../components/SVGIcon';
@@ -33,41 +32,8 @@ import useAppState from '../hooks/useAppState';
 import useAuthUser from '../hooks/useAuthUser';
 import useInterstitalAd from '../hooks/useInterstitalAd';
 import {Routes} from '../route';
-// import * as Sentry from "@sentry/react-native";
 
 const mainColor = '#CC301A';
-const getItemLayout = (data, index) => {
-  let sectionIndex = 0;
-  let itemIndex = index;
-  let offset = 0;
-
-  for (let section of data) {
-    console.log(section);
-    const sectionLength = 65;
-    if (itemIndex === 0) {
-      return {length: sectionLength, offset, index: sectionIndex};
-    }
-
-    offset += sectionLength;
-    itemIndex--;
-
-    for (let item of section.data) {
-      if (itemIndex === 0) {
-        return {length: 300, offset, index: sectionIndex};
-      }
-
-      offset += 300;
-      itemIndex--;
-
-      if (itemIndex > 0) {
-        offset += 16;
-        itemIndex--;
-      }
-    }
-    sectionIndex++;
-  }
-  return {length: 0, offset: 0, index: 0};
-};
 
 const HomeScreen = () => {
   const {getGamesDetailbyDate} = useApi();
@@ -76,7 +42,6 @@ const HomeScreen = () => {
   const safeAreaInset = useSafeAreaInsets();
   const navigation = useNavigation();
   const {authUser} = useAuthUser();
-  // const [allSectionSchedules, setAllSectionSchedules] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [visibleSchedules, setVisibleSchedules] = useState([]);
@@ -85,12 +50,9 @@ const HomeScreen = () => {
   );
   const [selectedDay, setSelectedDay] = useState(moment());
 
-  // const rawSchedules = useRef(null);
   const scheduleListRef = useRef(null);
-  // const scrollY = useRef(new Animated.Value(0)).current;
   const weekDayViewRef = useRef(null);
   const calendarViewRef = useRef(null);
-  // const lastViewableSection = useRef(null);
   const gameCardRefs = useRef({});
 
   useEffect(() => {
@@ -118,31 +80,30 @@ const HomeScreen = () => {
     getGames();
   }, []);
 
-  // when the visibleSchedules changed, scroll index to top
-  // useEffect(() => {
-  //   if (visibleSchedules.length > 0) {
-  //     if (scheduleListRef?.current?.scrollToLocation) {
-  //       scheduleListRef.current?.scrollToLocation({
-  //         sectionIndex: 0,
-  //         itemIndex: 0,
-  //         animated: false,
-  //       });
-  //     }
-  //   }
-  // }, [visibleSchedules]);
-
   useEffect(() => {
-    if (selectedDay == null) return;
-    if (scheduleListRef?.current?.scrollToLocation == null) return;
+    if (selectedDay == null) {
+      return;
+    }
+    if (scheduleListRef?.current?.getScrollResponder().scrollTo == null) {
+      console.warn('Ref of scroll view is null, unable to scroll to index');
+      return;
+    }
     const idx = visibleSchedules.findIndex(item =>
       moment(selectedDay).isSame(moment(item.date), 'day'),
     );
     if (idx <= visibleSchedules.length - 1 && idx >= 0) {
-      scheduleListRef.current?.scrollToLocation({
-        sectionIndex: idx,
-        itemIndex: 0,
-        animated: false,
-      });
+      let offset = 0;
+      for (let i = 0; i < idx; i++) {
+        if (visibleSchedules[i] != null) {
+          offset += 65;
+          offset += visibleSchedules[i].data.length * (300 + 16);
+        }
+      }
+      setTimeout(() => {
+        scheduleListRef?.current
+          ?.getScrollResponder()
+          .scrollTo({x: 0, y: offset, animated: false});
+      }, 300);
     }
   }, [selectedDay]);
 
@@ -205,6 +166,7 @@ const HomeScreen = () => {
         setVisibleSchedules(
           getLocalvisibleGames(visibleStartDate, sectionSchedule),
         );
+        // console.log('sectionSchedule=', JSON.stringify(sectionSchedule));
       }
     },
     [visibleStartDate],
@@ -445,7 +407,7 @@ const HomeScreen = () => {
         style={{
           alignSelf: 'center',
           height: 65,
-          maxHeight: 65,
+          // maxHeight: 65,
           justifyContent: 'center',
           alignItems: 'center',
           // marginBottom: 20,
@@ -496,38 +458,16 @@ const HomeScreen = () => {
         }}
         removeClippedSubviews={false}
         scrollEventThrottle={16}
-        // onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
-        ref={ref => (scheduleListRef.current = ref)}
+        ref={scheduleListRef}
         showsVerticalScrollIndicator={false}
         sections={visibleSchedules}
         keyExtractor={(item, index) => item.id.toString()}
         renderItem={renderGame}
-        ItemSeparatorComponent={(item, index) => (
-          <View style={{height: 16, width: '100%'}} />
-        )}
         renderSectionHeader={section => renderSectionHeader(section)}
         ListEmptyComponent={() => renderEmptySchedule()}
         onScrollToIndexFailed={() => {
           console.log('failed to scroll to index');
         }}
-        // getItemLayout={getItemLayout}
-
-        // onViewableItemsChanged={({ viewableItems }) => {
-        //   if (viewableItems.length > 0) {
-        //     const currentSection = viewableItems[0].section.date;
-        //     console.log('onViewableItemsChanged section:', currentSection);
-        //     if (currentSection !== lastViewableSection.current) {
-        //       setSelectedDay(currentSection);
-        //     }
-        //     lastViewableSection.current = currentSection;
-        //   }
-        // }}
-        // onScrollEndDrag={() => {
-        //   if (autoScrolling.current) {
-        //     autoScrolling.current = false;
-        //   }
-        //   console.log("scroll animation end");
-        // }}
       />
     );
   };

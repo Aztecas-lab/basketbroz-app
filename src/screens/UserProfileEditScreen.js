@@ -18,8 +18,7 @@ import SVGIcon from '../components/SVGIcon';
 import useApi from '../hooks/useApi';
 import useAuthUser from '../hooks/useAuthUser';
 import {Routes} from '../route';
-
-// import { SafeAreaView } from 'react-native-safe-area-context';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 const UserProfileEditScreen = () => {
   const {authUser} = useAuthUser();
@@ -46,16 +45,28 @@ const UserProfileEditScreen = () => {
 
   const onLogoutPress = async () => {
     setIsLoading(true);
+    const googleSignOutSucess = await GoogleSignin.signOut()
+      .then(r => {
+        console.log('[GoogleSignin] sign out success!');
+        return true;
+      })
+      .catch(error => {
+        console.error('[GoogleSignin]', error);
+        Alert.alert(
+          'Error',
+          `Failed to sign out Google: ${JSON.stringify(error)}`,
+        );
+        return false;
+      });
+
+    if (!googleSignOutSucess) {
+      setIsLoading(false);
+      return;
+    }
+
     const result = await logout();
     setIsLoading(false);
-    if (result.success) {
-      InteractionManager.runAfterInteractions(() => {
-        navigation.reset({
-          index: 0,
-          routes: [{name: Routes.AuthStack}],
-        });
-      });
-    } else {
+    if (!result.success) {
       Alert.alert('Error', `Failed to log out: ${JSON.stringify(result)}`);
     }
   };
@@ -64,14 +75,7 @@ const UserProfileEditScreen = () => {
     setIsDeleting(true);
     const result = await deleteAccount();
     setIsDeleting(false);
-    if (result.success) {
-      InteractionManager.runAfterInteractions(() => {
-        navigation.reset({
-          index: 0,
-          routes: [{name: Routes.AuthStack}],
-        });
-      });
-    } else {
+    if (!result.success) {
       Alert.alert(
         'Error',
         `Failed to delete account: ${JSON.stringify(result)}`,

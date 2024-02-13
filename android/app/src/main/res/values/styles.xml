@@ -7,9 +7,9 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
-    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+    <style name="SplashScreenTheme" parent="Theme.App.SplashScreen">
         <item name="android:windowIsTranslucent">true</item>
-        <item name="postSplashScreenTheme">@style/AppTheme</item> // or other theme you want to use
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
     </style>
 
 </resources>

@@ -19,10 +19,11 @@ import AppleLoginButton from '../components/AppleLoginButton';
 import TwitterLoginModal from '../components/TwitterLoginModal';
 import useApi from '../hooks/useApi';
 import {Routes} from '../route';
-import env from '../env';
+
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 const SignInScreen = () => {
-  const {registerApple, login} = useApi();
+  const {registerApple, login, registerGoogle} = useApi();
   const twitterModalRef = useRef(null);
   const {width} = useWindowDimensions();
   const navigation = useNavigation();
@@ -31,12 +32,42 @@ const SignInScreen = () => {
   /**
    * handler
    */
-
-  const handleGoogleLogin = () => {
-    if (twitterModalRef.current != null) {
-      twitterModalRef.current.open('google');
-      setIsLoading(true);
-      // Linking.openURL(`${env.HOST}${env.AUTH_PATH.google}`);
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    GoogleSignin.configure({
+      webClientId:
+        '619423869115-k9mi31jbqb9pc07klnhhtdf203imdnip.apps.googleusercontent.com',
+      iosClientId:
+        '619423869115-a79289magg850soa3sgi16bhvditrtc1.apps.googleusercontent.com',
+    });
+    const result = await GoogleSignin.signIn().catch(err => {
+      setIsLoading(false);
+      console.warn(err);
+    });
+    console.log('GoogleSignin signin result:', result);
+    if (result?.idToken) {
+      const tokens = await GoogleSignin.getTokens();
+      console.log('get tokens:', tokens);
+      const r = await registerGoogle({token: tokens.accessToken}).catch(err => {
+        setIsLoading(false);
+        console.warn(err);
+      });
+      if (r.success && r.sns_token) {
+        login({snsType: 'google', snsToken: r.sns_token}).then(resp => {
+          setIsLoading(false);
+          if (resp.success) {
+            InteractionManager.runAfterInteractions(() => {
+              navigation.replace(Routes.HomeStack);
+            });
+          }
+        });
+      } else {
+        setIsLoading(false);
+        console.warn(r);
+      }
+    } else {
+      setIsLoading(false);
+      console.warn('No a valid result from google signin!');
     }
   };
 

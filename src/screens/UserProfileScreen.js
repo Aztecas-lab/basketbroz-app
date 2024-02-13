@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {
   Image,
@@ -13,12 +13,12 @@ import {
 } from 'react-native';
 
 import SVGIcon from '../components/SVGIcon';
-import { Routes } from '../route';
+import {Routes} from '../route';
 
 // import { SafeAreaView } from 'react-native-safe-area-context';
 
 const UserProfile = () => {
-  const { width, height } = useWindowDimensions();
+  const {width, height} = useWindowDimensions();
   const navigation = useNavigation();
   const currentUser = null;
   const socialAppSize = (width - 100 - 24) / 2;
@@ -29,18 +29,28 @@ const UserProfile = () => {
 
   const renderNavHeader = () => {
     return (
-      <View style={{ width: '100%', height: 56, backgroundColor: '#000', alignItems: 'center', flexDirection: 'row' }}>
-        <TouchableOpacity style={{ padding: 16 }} onPress={() => navigation.goBack()}>
-          <SVGIcon svgProps={{ width: 24, height: 24 }} name={'ic_close'}></SVGIcon>
+      <View
+        style={{
+          width: '100%',
+          height: 56,
+          backgroundColor: '#000',
+          alignItems: 'center',
+          flexDirection: 'row',
+        }}>
+        <TouchableOpacity
+          style={{padding: 16}}
+          onPress={() => navigation.goBack()}>
+          <SVGIcon
+            svgProps={{width: 24, height: 24}}
+            name={'ic_close'}></SVGIcon>
         </TouchableOpacity>
         <Text ellipsizeMode="tail" numberOfLines={1} style={styles.username}>
           {currentUser?.userId}
         </Text>
         <TouchableOpacity
-          hitSlop={{ bottom: 20, top: 20, right: 20, left: 20 }}
+          hitSlop={{bottom: 20, top: 20, right: 20, left: 20}}
           activeOpacity={0.5}
-          onPress={onEditPress}
-        >
+          onPress={onEditPress}>
           <Text style={styles.edit}>{'Edit'}</Text>
         </TouchableOpacity>
       </View>
@@ -59,10 +69,9 @@ const UserProfile = () => {
           marginTop: 24,
           padding: 18,
           justifyContent: 'space-between',
-        }}
-      >
+        }}>
         {icon}
-        <Text style={{ color: '#fff', fontSize: 11 }}>{currentUser?.userId}</Text>
+        <Text style={{color: '#fff', fontSize: 11}}>{currentUser?.userId}</Text>
       </Pressable>
     );
   };
@@ -70,10 +79,11 @@ const UserProfile = () => {
   return (
     <View style={styles.background}>
       {renderNavHeader()}
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <ScrollView>
           {/* user info */}
-          <View style={{ alignSelf: 'center', alignItems: 'center', marginTop: 14 }}>
+          <View
+            style={{alignSelf: 'center', alignItems: 'center', marginTop: 14}}>
             <Pressable onPress={() => {}}>
               <Image
                 style={{
@@ -82,31 +92,60 @@ const UserProfile = () => {
                   borderRadius: 48,
                   backgroundColor: '#888',
                 }}
-                source={{ uri: currentUser?.avatar }}
+                source={{uri: currentUser?.avatar}}
               />
             </Pressable>
-            <Text style={{ marginTop: 14, fontSize: 14, color: '#fff', fontWeight: '700' }}>
+            <Text
+              style={{
+                marginTop: 14,
+                fontSize: 14,
+                color: '#fff',
+                fontWeight: '700',
+              }}>
               {currentUser?.nickname}
             </Text>
-            <Text style={{ fontSize: 11, color: 'rgba(255,255,255, 0.38)' }}>{currentUser?.userId}</Text>
+            <Text style={{fontSize: 11, color: 'rgba(255,255,255, 0.38)'}}>
+              {currentUser?.userId}
+            </Text>
 
-            <Text style={{ fontSize: 11, color: '#fff', paddingHorizontal: 40, marginTop: 30, textAlign: 'center' }}>
+            <Text
+              style={{
+                fontSize: 11,
+                color: '#fff',
+                paddingHorizontal: 40,
+                marginTop: 30,
+                textAlign: 'center',
+              }}>
               {
                 'Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.Hi, I’m Jane Doe.'
               }
             </Text>
-            <SVGIcon style={{ marginTop: 16 }} name={'ic_arrow_down'} svgProps={{ width: 16, height: 16 }} />
+            <SVGIcon
+              style={{marginTop: 16}}
+              name={'ic_arrow_down'}
+              svgProps={{width: 16, height: 16}}
+            />
           </View>
 
           {/* follow */}
-          <View style={{ alignItems: 'center' }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 12 }}>
-              <View style={{ alignItems: 'center' }}>
+          <View style={{alignItems: 'center'}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                alignSelf: 'center',
+                marginTop: 12,
+              }}>
+              <View style={{alignItems: 'center'}}>
                 <Text style={styles.follow_num}>533</Text>
                 <Text style={styles.follow_label}>Followers</Text>
               </View>
-              <SVGIcon style={{ marginHorizontal: 16 }} name="ic_separator" svgProps={{ width: 18, height: 18 }} />
-              <View style={{ alignItems: 'center' }}>
+              <SVGIcon
+                style={{marginHorizontal: 16}}
+                name="ic_separator"
+                svgProps={{width: 18, height: 18}}
+              />
+              <View style={{alignItems: 'center'}}>
                 <Text style={styles.follow_num}>273</Text>
                 <Text style={styles.follow_label}>Following</Text>
               </View>
@@ -120,43 +159,53 @@ const UserProfile = () => {
                 borderRadius: 24,
                 justifyContent: 'center',
                 alignItems: 'center',
-              }}
-            >
-              <Text style={{ fontSize: 14, color: '#222' }}>Follow</Text>
+              }}>
+              <Text style={{fontSize: 14, color: '#222'}}>Follow</Text>
             </Pressable>
           </View>
 
           {/* Social Apps */}
           <View
-            style={{ paddingHorizontal: 50, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}
-          >
+            style={{
+              paddingHorizontal: 50,
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+            }}>
             {renderSocialApps(
               'sns_ig',
-              <Image style={{ width: 36, height: 36 }} source={require('../assets/sns_ig.png')}></Image>,
+              <Image
+                style={{width: 36, height: 36}}
+                source={require('../assets/sns_ig.png')}></Image>,
             )}
             {renderSocialApps(
               'sns_yt',
-              <Image style={{ width: 36, height: 36 }} source={require('../assets/sns_yt.png')}></Image>,
+              <Image
+                style={{width: 36, height: 36}}
+                source={require('../assets/sns_yt.png')}></Image>,
             )}
             {renderSocialApps(
               'sus_fb',
-              <Image style={{ width: 36, height: 36 }} source={require('../assets/sns_fb.png')}></Image>,
+              <Image
+                style={{width: 36, height: 36}}
+                source={require('../assets/sns_fb.png')}></Image>,
             )}
             {renderSocialApps(
               'sns_twitter',
-              <Image style={{ width: 36, height: 36 }} source={require('../assets/sns_twitter.png')}></Image>,
+              <Image
+                style={{width: 36, height: 36}}
+                source={require('../assets/sns_twitter.png')}></Image>,
             )}
           </View>
 
           {currentUser ? (
             <TouchableOpacity
-              style={{ alignSelf: 'center', marginBottom: 50, marginTop: 16 }}
+              style={{alignSelf: 'center', marginBottom: 50, marginTop: 16}}
               onPress={async () => {
                 await AsyncStorage.removeItem('userId');
                 navigation.replace('AuthStack');
-              }}
-            >
-              <Text style={{ color: '#f00', marginTop: 20 }}>{'Sign out'}</Text>
+              }}>
+              <Text style={{color: '#f00', marginTop: 20}}>{'Sign out'}</Text>
             </TouchableOpacity>
           ) : null}
         </ScrollView>

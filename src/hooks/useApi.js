@@ -123,6 +123,15 @@ const useApi = () => {
   };
 
   /**
+   * Google login
+   */
+  const registerGoogle = async ({token}) => {
+    const path = `/api/auth/register/google`;
+    const result = await post(path, {token: token});
+    return {success: result.sns_token != null, ...result};
+  };
+
+  /**
    * Log out
    */
   const logout = useCallback(async () => {
@@ -246,6 +255,7 @@ const useApi = () => {
     getGamesDetailbyDate,
     getGameSchedules,
     registerApple,
+    registerGoogle,
     deleteAccount,
   };
 };

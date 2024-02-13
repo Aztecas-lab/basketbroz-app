@@ -45,7 +45,7 @@ const GameCard = forwardRef((props, ref) => {
   const openAtUtc = channel?.open_at;
   const closeAtLocal = moment.utc(closeAtUtc).local().format('HH:mm');
   const openAtLocal = moment.utc(openAtUtc).local().format('HH:mm');
-  const canClaim = ad_reward?.can_click_ad ?? false;
+  const canClaim = ad_reward?.can_click_ad;
   const hasLastClick = ad_reward?.click_latest_date_time;
 
   const gameStatus = channel.status;
@@ -141,9 +141,24 @@ const GameCard = forwardRef((props, ref) => {
     return (
       <View
         style={{flexDirection: 'column', alignItems: 'center', maxWidth: 72}}>
-        <Image style={styles.team_logo} source={teamLogo}></Image>
-        <Text style={styles.team_name}>{teamName}</Text>
-        <Text style={styles.away_home}>{awayHome}</Text>
+        {teamLogo == null ? (
+          <View
+            style={{
+              ...styles.team_logo,
+              backgroundColor: '#222',
+              borderRadius: 36,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text style={{textAlign: 'center', color: '#fff'}}>
+              Not Available
+            </Text>
+          </View>
+        ) : (
+          <Image style={styles.team_logo} source={teamLogo} />
+        )}
+        <Text style={styles.team_name}>{teamName ?? 'TBD'}</Text>
+        <Text style={styles.away_home}>{awayHome ?? 'TBD'}</Text>
       </View>
     );
   };
@@ -161,9 +176,16 @@ const GameCard = forwardRef((props, ref) => {
       case GAME_STATUS.created:
         // local claimed or server can't click
         if (claimed || !canClaim) {
-          buttonText = wording.TICKET_CLAIMED;
-          buttonDesp = wording.DES_CLAIMED;
-          disable = true;
+          // no info for ad_reward from the server
+          if (canClaim == null) {
+            buttonText = wording.CLAIM_TICKET;
+            buttonDesp = wording.DES_CLAIM_NOT_AVAILABLE;
+            disable = true;
+          } else {
+            buttonText = wording.TICKET_CLAIMED;
+            buttonDesp = wording.DES_CLAIMED;
+            disable = true;
+          }
         } else {
           buttonText = wording.CLAIM_TICKET;
           buttonDesp = `${wording.DES_CLAIM_BEFORE} ${closeAtLocal}`;
@@ -171,12 +193,12 @@ const GameCard = forwardRef((props, ref) => {
         }
         break;
       case GAME_STATUS.deleted:
-        if(hasLastClick){
-          buttonText = wording.TICKET_CLAIMED
-          buttonDesp = wording.DES_CLAIMED
-        }else{
-          buttonText = wording.CLAIM_TICKET
-          buttonDesp = wording.DES_EXPIRED
+        if (hasLastClick) {
+          buttonText = wording.TICKET_CLAIMED;
+          buttonDesp = wording.DES_CLAIMED;
+        } else {
+          buttonText = wording.CLAIM_TICKET;
+          buttonDesp = wording.DES_EXPIRED;
         }
         disable = true;
         break;
@@ -265,7 +287,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     padding: 16,
     height: 300,
-    maxHeight: 300,
+    marginBottom: 16,
+    // maxHeight: 300,
   },
   background_selected: {
     backgroundColor: '#000',
